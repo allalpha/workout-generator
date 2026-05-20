@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💪 Random Workout Generator</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 40px 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: white;
+            margin-bottom: 6px;
+        }
+
+        .subtitle {
+            color: #a78bfa;
+            font-size: 0.95rem;
+            margin-bottom: 30px;
+        }
+
+        /* Difficulty Buttons */
+        .difficulty-row {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .diff-btn {
+            padding: 12px 24px;
+            border-radius: 50px;
+            border: 2px solid transparent;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            background: rgba(255,255,255,0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .diff-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+        .diff-btn:active { transform: scale(0.96); }
+
+        .diff-btn.easy {
+            border-color: #4ade80;
+            color: #4ade80;
+        }
+        .diff-btn.easy.active {
+            background: #4ade80;
+            color: #0f0c29;
+            box-shadow: 0 0 30px rgba(74,222,128,0.4);
+        }
+
+        .diff-btn.medium {
+            border-color: #fbbf24;
+            color: #fbbf24;
+        }
+        .diff-btn.medium.active {
+            background: #fbbf24;
+            color: #0f0c29;
+            box-shadow: 0 0 30px rgba(251,191,36,0.4);
+        }
+
+        .diff-btn.beast {
+            border-color: #f43f5e;
+            color: #f43f5e;
+        }
+        .diff-btn.beast.active {
+            background: #f43f5e;
+            color: white;
+            box-shadow: 0 0 30px rgba(244,63,94,0.5);
+            animation: beastPulse 0.8s ease-in-out infinite;
+        }
+
+        @keyframes beastPulse {
+            0%, 100% { box-shadow: 0 0 30px rgba(244,63,94,0.5); }
+            50% { box-shadow: 0 0 60px rgba(244,63,94,0.9); }
+        }
+
+        /* Generate Button */
+        .generate-btn {
+            background: linear-gradient(135deg, #8b5cf6, #6366f1);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            font-size: 1.3rem;
+            font-weight: 800;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            box-shadow: 0 10px 40px rgba(99,102,241,0.4);
+            margin-bottom: 30px;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 50px rgba(99,102,241,0.6);
+        }
+        .generate-btn:active {
+            transform: scale(0.95);
+        }
+
+        .generate-btn.spinning {
+            animation: spinShake 0.5s ease-in-out;
+        }
+
+        @keyframes spinShake {
+            0% { transform: rotate(0deg) scale(1); }
+            25% { transform: rotate(-5deg) scale(1.05); }
+            50% { transform: rotate(5deg) scale(1.1); }
+            75% { transform: rotate(-3deg) scale(1.05); }
+            100% { transform: rotate(0deg) scale(1); }
+        }
+
+        /* Workout Card */
+        .workout-card {
+            background: rgba(255,255,255,0.06);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255,255,255,0.08);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .workout-card.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .workout-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .workout-title {
+            font-size: 1.3rem;
+            color: white;
+            font-weight: 700;
+        }
+
+        .total-badge {
+            background: rgba(139,92,246,0.3);
+            color: #c4b5fd;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .exercise-list {
+            list-style: none;
+            text-align: left;
+        }
+
+        .exercise-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 16px;
+            margin-bottom: 8px;
+            background: rgba(255,255,255,0.04);
+            border-radius: 14px;
+            transition: all 0.3s ease;
+            animation: fadeSlideIn 0.4s ease forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeSlideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .exercise-emoji {
+            font-size: 1.8rem;
+            margin-right: 14px;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .exercise-info {
+            flex: 1;
+        }
+
+        .exercise-name {
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .exercise-detail {
+            color: #a5b4fc;
+            font-size: 0.85rem;
+            margin-top: 2px;
+        }
+
+        .exercise-count {
+            font-size: 0.7rem;
+            color: #6b7280;
+            margin-top: 3px;
+        }
+
+        .exercise-check {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            color: transparent;
+            flex-shrink: 0;
+            margin-left: 8px;
+        }
+
+        .exercise-check.done {
+            background: #4ade80;
+            border-color: #4ade80;
+            color: white;
+            box-shadow: 0 0 15px rgba(74,222,128,0.4);
+        }
+
+        /* Actions row */
+        .actions-row {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.05);
+            color: #c4b5fd;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn:hover {
+            background: rgba(255,255,255,0.12);
+            border-color: rgba(255,255,255,0.25);
+        }
+
+        /* History */
+        .history-section {
+            margin-top: 25px;
+            text-align: left;
+        }
+
+        .history-title {
+            color: #a78bfa;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 14px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px;
+            margin-bottom: 6px;
+            color: #9ca3af;
+            font-size: 0.85rem;
+        }
+
+        .history-diff {
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .history-diff.easy { background: rgba(74,222,128,0.2); color: #4ade80; }
+        .history-diff.medium { background: rgba(251,191,36,0.2); color: #fbbf24; }
+        .history-diff.beast { background: rgba(244,63,94,0.2); color: #f43f5e; }
+
+        .no-history {
+            color: #6b7280;
+            font-style: italic;
+            text-align: center;
+            padding: 15px;
+        }
+
+        /* Celebration */
+        .confetti-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 3px;
+            animation: confettiFall 2s ease-out forwards;
+        }
+
+        @keyframes confettiFall {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container { padding: 25px 18px; }
+            h1 { font-size: 1.5rem; }
+            .generate-btn { font-size: 1.1rem; padding: 15px 35px; }
+            .diff-btn { padding: 10px 18px; font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="confetti-overlay" id="confetti"></div>
+
+    <div class="container">
+        <h1>💪 Random Workout</h1>
+        <p class="subtitle">Click the button. Get a workout. Get stronger. 🔥</p>
+
+        <!-- Difficulty Selector -->
+        <div class="difficulty-row" id="difficultyRow">
+            <button class="diff-btn easy active" data-diff="easy">🌱 Easy</button>
+            <button class="diff-btn medium" data-diff="medium">⚡ Medium</button>
+            <button class="diff-btn beast" data-diff="beast">💀 Beast</button>
+        </div>
+
+        <!-- Generate Button -->
+        <button class="generate-btn" id="generateBtn" onclick="generateWorkout()">
+            🎲 GENERATE WORKOUT
+        </button>
+
+        <!-- Workout Result -->
+        <div id="workoutResult"></div>
+
+        <!-- Action Buttons -->
+        <div class="actions-row" id="actionsRow" style="display:none;">
+            <button class="action-btn" onclick="generateWorkout()">🔄 Re-roll</button>
+            <button class="action-btn" onclick="shareWorkout()">📋 Copy to Clipboard</button>
+        </div>
+
+        <!-- History -->
+        <div class="history-section" id="historySection">
+            <div class="history-title">📜 Workout History</div>
+            <div id="historyList">
+                <p class="no-history">No workouts yet — generate your first one! 🏃</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============ EXERCISE DATABASE ============
+        const exercises = {
+            easy: [
+                { name: "Jumping Jacks", detail: "30 seconds", emoji: "⭐", reps: "Do them at your own pace" },
+                { name: "Bodyweight Squats", detail: "10 reps", emoji: "🦵", reps: "Keep your back straight" },
+                { name: "Wall Push-ups", detail: "10 reps", emoji: "🤲", reps: "Stand an arm's length from the wall" },
+                { name: "Lunges", detail: "8 each leg", emoji: "🚶", reps: "Step forward, bend both knees" },
+                { name: "Plank", detail: "20 seconds", emoji: "🧘", reps: "Keep your body in a straight line" },
+                { name: "Glute Bridges", detail: "12 reps", emoji: "🌉", reps: "Lie on back, lift hips up" },
+                { name: "Arm Circles", detail: "30 seconds", emoji: "🌀", reps: "Big circles forward, then backward" },
+                { name: "Standing Calf Raises", detail: "15 reps", emoji: "🦶", reps: "Rise up on your toes" },
+                { name: "Knee Push-ups", detail: "8 reps", emoji: "🙆", reps: "Push-ups on your knees — you got this!" },
+                { name: "Marching in Place", detail: "45 seconds", emoji: "🪖", reps: "Lift knees high, swing arms" },
+                { name: "Side Leg Raises", detail: "10 each side", emoji: "🦿", reps: "Lie on side, lift top leg" },
+                { name: "Toe Touches", detail: "15 reps", emoji: "👆", reps: "Bend forward, touch your toes" },
+                { name: "Bird Dog", detail: "8 each side", emoji: "🐕", reps: "On all fours, extend opposite arm & leg" },
+                { name: "Wall Sit", detail: "20 seconds", emoji: "🪑", reps: "Back against wall, slide down like sitting" },
+                { name: "Cat-Cow Stretch", detail: "10 reps", emoji: "🐱", reps: "Arch and round your back on all fours" },
+            ],
+            medium: [
+                { name: "Push-ups", detail: "12 reps", emoji: "💪", reps: "Full push-ups — chest to ground!" },
+                { name: "Squats", detail: "20 reps", emoji: "🦵", reps: "Go deep, explode up" },
+                { name: "Mountain Climbers", detail: "30 seconds", emoji: "⛰️", reps: "Fast knees to chest in plank position" },
+                { name: "Burpees", detail: "8 reps", emoji: "🔥", reps: "Squat → plank → push-up → jump!" },
+                { name: "Plank", detail: "45 seconds", emoji: "🧘", reps: "Hold it steady, no sagging" },
+                { name: "Jump Squats", detail: "10 reps", emoji: "🚀", reps: "Squat down, explode up, land soft" },
+                { name: "Bicycle Crunches", detail: "20 reps", emoji: "🚲", reps: "Elbow to opposite knee, keep moving" },
+                { name: "Tricep Dips", detail: "12 reps", emoji: "🪑", reps: "Use a chair or low table" },
+                { name: "High Knees", detail: "40 seconds", emoji: "🏃", reps: "Run in place, knees above hips" },
+                { name: "Reverse Lunges", detail: "12 each leg", emoji: "↩️", reps: "Step backward instead of forward" },
+                { name: "Flutter Kicks", detail: "30 seconds", emoji: "🏊", reps: "Lie on back, kick legs up and down" },
+                { name: "Plank Jacks", detail: "20 reps", emoji: "🤸", reps: "Plank position, jump feet apart and together" },
+                { name: "Russian Twists", detail: "20 reps", emoji: "🥨", reps: "Sit leaning back, twist side to side" },
+                { name: "Donkey Kicks", detail: "15 each leg", emoji: "🦵", reps: "On all fours, kick one leg up behind" },
+                { name: "Star Jumps", detail: "15 reps", emoji: "⭐", reps: "Jump up spreading arms and legs wide!" },
+            ],
+            beast: [
+                { name: "Burpees", detail: "15 reps", emoji: "💀", reps: "Full commitment — no half-reps!" },
+                { name: "Diamond Push-ups", detail: "10 reps", emoji: "💎", reps: "Hands together forming a diamond" },
+                { name: "Jump Lunges", detail: "12 each leg", emoji: "⚡", reps: "Switch legs mid-air. explosive!" },
+                { name: "Plank to Push-up", detail: "10 reps", emoji: "🔄", reps: "Plank on elbows → push up on hands → repeat" },
+                { name: "Squat Jumps", detail: "20 reps", emoji: "🚀", reps: "Maximum height every rep" },
+                { name: "Mountain Climbers", detail: "60 seconds", emoji: "⛰️", reps: "Sprint pace — don't slow down!" },
+                { name: "Bulgarian Split Squats", detail: "10 each leg", emoji: "🇧🇬", reps: "Back foot on a chair, deep squat" },
+                { name: "Side Plank", detail: "30 sec each side", emoji: "🧘", reps: "Stack your feet, hips high" },
+                { name: "Tuck Jumps", detail: "12 reps", emoji: "🤸", reps: "Jump and pull knees to chest mid-air" },
+                { name: "Wide Push-ups", detail: "12 reps", emoji: "🤲", reps: "Hands wider than shoulder width" },
+                { name: "Crab Walk", detail: "45 seconds", emoji: "🦀", reps: "Hands and feet, belly up — move!" },
+                { name: "Superman Plank", detail: "30 seconds", emoji: "🦸", reps: "Plank but lift opposite arm & leg" },
+                { name: "Pistol Squats", detail: "5 each leg", emoji: "🔫", reps: "One-leg squat — use a wall for balance" },
+                { name: "Bear Crawl", detail: "30 seconds", emoji: "🐻", reps: "On hands and feet, crawl forward & back" },
+                { name: "Burpee + Tuck Jump", detail: "8 reps", emoji: "☠️", reps: "Burpee then tuck jump — ultimate combo!" },
+            ],
+        };
+
+        let currentDifficulty = 'easy';
+        let currentWorkout = null;
+        let workoutHistory = [];
+
+        // ============ DIFFICULTY SELECTION ============
+        document.getElementById('difficultyRow').addEventListener('click', function(e) {
+            if (e.target.classList.contains('diff-btn')) {
+                document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                currentDifficulty = e.target.dataset.diff;
+            }
+        });
+
+        // ============ GENERATE WORKOUT ============
+        function generateWorkout() {
+            const btn = document.getElementById('generateBtn');
+            btn.classList.add('spinning');
+            setTimeout(() => btn.classList.remove('spinning'), 500);
+
+            const pool = exercises[currentDifficulty];
+            const count = currentDifficulty === 'easy' ? 5 : currentDifficulty === 'medium' ? 6 : 7;
+
+            // Shuffle and pick
+            const shuffled = [...pool].sort(() => Math.random() - 0.5);
+            const selected = shuffled.slice(0, count);
+
+            currentWorkout = {
+                difficulty: currentDifficulty,
+                exercises: selected,
+                timestamp: new Date(),
+            };
+
+            // Add to history
+            workoutHistory.unshift(currentWorkout);
+            if (workoutHistory.length > 10) workoutHistory.pop();
+
+            renderWorkout(currentWorkout);
+            renderHistory();
+
+            // Show actions
+            document.getElementById('actionsRow').style.display = 'flex';
+
+            // Scroll to workout
+            document.getElementById('workoutResult').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // ============ RENDER WORKOUT ============
+        function renderWorkout(workout) {
+            const difficultyEmoji = workout.difficulty === 'easy' ? '🌱' : workout.difficulty === 'medium' ? '⚡' : '💀';
+            const difficultyLabel = workout.difficulty.charAt(0).toUpperCase() + workout.difficulty.slice(1);
+            const totalExercises = workout.exercises.length;
+
+            let html = `
+                <div class="workout-card show">
+                    <div class="workout-header">
+                        <span class="workout-title">${difficultyEmoji} ${difficultyLabel} Workout</span>
+                        <span class="total-badge">${totalExercises} exercises</span>
+                    </div>
+                    <ul class="exercise-list">
+            `;
+
+            workout.exercises.forEach((ex, i) => {
+                html += `
+                    <li class="exercise-item" style="animation-delay: ${i * 0.08}s;">
+                        <span class="exercise-emoji">${ex.emoji}</span>
+                        <div class="exercise-info">
+                            <div class="exercise-name">${ex.name}</div>
+                            <div class="exercise-detail">${ex.detail}</div>
+                            <div class="exercise-count">💡 ${ex.reps}</div>
+                        </div>
+                        <div class="exercise-check" onclick="toggleCheck(this)" title="Mark as done">✅</div>
+                    </li>
+                `;
+            });
+
+            html += `
+                    </ul>
+                </div>
+            `;
+
+            document.getElementById('workoutResult').innerHTML = html;
+
+            // Re-trigger animations
+            setTimeout(() => {
+                document.querySelectorAll('.exercise-item').forEach(el => {
+                    el.style.opacity = '1';
+                });
+                document.querySelector('.workout-card').classList.add('show');
+            }, 50);
+        }
+
+        // ============ TOGGLE CHECK ============
+        function toggleCheck(el) {
+            el.classList.toggle('done');
+            if (el.classList.contains('done')) {
+                el.textContent = '✅';
+
+                // Check if all done
+                const allChecks = document.querySelectorAll('.exercise-check');
+                const allDone = Array.from(allChecks).every(c => c.classList.contains('done'));
+                if (allDone) {
+                    celebrate();
+                }
+            } else {
+                el.textContent = '';
+            }
+        }
+
+        // ============ CELEBRATION ============
+        function celebrate() {
+            const confetti = document.getElementById('confetti');
+            const colors = ['#4ade80', '#f43f5e', '#fbbf24', '#8b5cf6', '#38bdf8', '#fb923c', '#a78bfa', '#34d399'];
+
+            for (let i = 0; i < 60; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'confetti-piece';
+                piece.style.left = Math.random() * 100 + '%';
+                piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                piece.style.animationDelay = Math.random() * 1.5 + 's';
+                piece.style.width = (Math.random() * 10 + 6) + 'px';
+                piece.style.height = (Math.random() * 10 + 6) + 'px';
+                confetti.appendChild(piece);
+
+                setTimeout(() => piece.remove(), 3000);
+            }
+        }
+
+        // ============ RENDER HISTORY ============
+        function renderHistory() {
+            const historyList = document.getElementById('historyList');
+
+            if (workoutHistory.length === 0) {
+                historyList.innerHTML = '<p class="no-history">No workouts yet — generate your first one! 🏃</p>';
+                return;
+            }
+
+            let html = '';
+            workoutHistory.forEach((w, i) => {
+                const timeStr = formatTime(w.timestamp);
+                const diffClass = w.difficulty;
+                const diffEmoji = w.difficulty === 'easy' ? '🌱' : w.difficulty === 'medium' ? '⚡' : '💀';
+                html += `
+                    <div class="history-item">
+                        <span>${diffEmoji} ${w.exercises.length} exercises</span>
+                        <span class="history-diff ${diffClass}">${w.difficulty.toUpperCase()}</span>
+                        <span style="font-size:0.75rem; color:#6b7280;">${timeStr}</span>
+                    </div>
+                `;
+            });
+
+            historyList.innerHTML = html;
+        }
+
+        // ============ FORMAT TIME ============
+        function formatTime(date) {
+            const now = new Date();
+            const diff = Math.floor((now - date) / 1000);
+
+            if (diff < 60) return 'just now';
+            if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
+            if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
+            return date.toLocaleDateString();
+        }
+
+        // ============ SHARE / COPY ============
+        function shareWorkout() {
+            if (!currentWorkout) return;
+
+            let text = `💪 My ${currentWorkout.difficulty.toUpperCase()} Workout\n`;
+            text += `━━━━━━━━━━━━━━━━\n`;
+            currentWorkout.exercises.forEach((ex, i) => {
+                text += `${i + 1}. ${ex.emoji} ${ex.name} — ${ex.detail}\n   💡 ${ex.reps}\n`;
+            });
+            text += `━━━━━━━━━━━━━━━━\n`;
+            text += `Generated by Random Workout Generator 🎲`;
+
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = event.target;
+                const original = btn.textContent;
+                btn.textContent = '✅ Copied!';
+                btn.style.color = '#4ade80';
+                btn.style.borderColor = '#4ade80';
+                setTimeout(() => {
+                    btn.textContent = original;
+                    btn.style.color = '#c4b5fd';
+                    btn.style.borderColor = 'rgba(255,255,255,0.15)';
+                }, 2000);
+            }).catch(() => {
+                alert('Could not copy. Here is your workout:\n\n' + text);
+            });
+        }
+    </script>
+</body>
+</html>
