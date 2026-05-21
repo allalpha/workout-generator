@@ -242,6 +242,28 @@
             100% { transform: rotate(0deg) scale(1); }
         }
 
+        .install-btn {
+            display: block;
+            width: 100%;
+            max-width: 340px;
+            margin: 20px auto 0;
+            padding: 16px 32px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border: 2px dashed rgba(255,255,255,0.3);
+            border-radius: 16px;
+            cursor: pointer;
+            color: #FF6B35;
+            background: rgba(255,107,53,0.1);
+            transition: all 0.3s ease;
+        }
+        .install-btn:hover {
+            background: rgba(255,107,53,0.2);
+            border-color: #FF6B35;
+            transform: translateY(-2px);
+        }
+        .install-btn:active { transform: scale(0.96); }
+
         /* Workout Card */
         .workout-card {
             background: rgba(255,255,255,0.06);
@@ -493,9 +515,43 @@
                 <p class="no-history">No workouts yet — generate your first one! 🏃</p>
             </div>
         </div>
+
+        <!-- Install App Button (appears when installable) -->
+        <button class="install-btn" id="installBtn" style="display:none;" onclick="installApp()">
+            📲 Add to Home Screen
+        </button>
     </div>
 
     <script>
+        // ============ PWA INSTALL ============
+        let deferredPrompt = null;
+
+        window.addEventListener('beforeinstallprompt', function(e) {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('installBtn').style.display = 'block';
+        });
+
+        function installApp() {
+            if (!deferredPrompt) {
+                // Fallback: show platform-specific instructions
+                const isIOS = /iphone|ipad|ipod/.test(navigator.userAgent.toLowerCase());
+                if (isIOS) {
+                    alert('Tap the Share button (📤) at the bottom of Safari, then tap "Add to Home Screen"');
+                } else {
+                    alert('Tap the menu (⋮), then tap "Install" or "Add to Home Screen"');
+                }
+                return;
+            }
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then(function(result) {
+                if (result.outcome === 'accepted') {
+                    document.getElementById('installBtn').style.display = 'none';
+                }
+                deferredPrompt = null;
+            });
+        }
+
         // ============ EXERCISE DATABASE ============
         const exercises = {
             easy: [
