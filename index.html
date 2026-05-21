@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
     <!-- Google Search Console Verification -->
     <meta name="google-site-verification" content="rh4-avyRkgQsprVaGA3Md0q6NFiz33IyfambhRh2Y8Q" />
@@ -31,9 +31,9 @@
     <link rel="apple-touch-icon" sizes="512x512" href="https://allalpha.github.io/workout-generator/icon-512.png">
 
     <!-- Theme color -->
-    <meta name="theme-color" content="#FF3D00">
+    <meta name="theme-color" content="#0f0c29">
 
-    <!-- Open Graph / Social Sharing -->
+    <!-- Open Graph -->
     <meta property="og:title" content="Random Workout Generator - Free Daily Exercise Routine">
     <meta property="og:description" content="Generate a random workout instantly! Easy, Medium, or Beast mode. Perfect for home fitness — no equipment needed.">
     <meta property="og:type" content="website">
@@ -50,9 +50,8 @@
     <meta name="twitter:title" content="Random Workout Generator - Free Daily Exercise">
     <meta name="twitter:description" content="Click to generate a random workout! 3 difficulty modes, 15+ exercises each. 100% free.">
     <meta name="twitter:image" content="https://allalpha.github.io/workout-generator/icon-512.png">
-    <meta name="twitter:image:alt" content="Random Workout Generator - dumbbell icon">
 
-    <!-- Structured Data: WebApplication -->
+    <!-- Structured Data -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -62,15 +61,9 @@
       "url": "https://allalpha.github.io/workout-generator/",
       "applicationCategory": "HealthApplication",
       "operatingSystem": "All",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      }
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
     }
     </script>
-
-    <!-- Structured Data: FAQ -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -86,18 +79,10 @@
         },
         {
           "@type": "Question",
-          "name": "What exercises are included in the random workout?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "The generator includes 45+ exercises across three levels. Easy includes jumping jacks, squats, wall push-ups. Medium adds burpees, mountain climbers, bicycle crunches. Beast mode features diamond push-ups, pistol squats, and tuck jumps."
-          }
-        },
-        {
-          "@type": "Question",
           "name": "Can I use this workout generator without equipment?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes! All exercises are bodyweight-only. No dumbbells, no gym membership, no equipment needed. You can do every workout at home."
+            "text": "Yes! All exercises are bodyweight-only. No dumbbells, no gym membership, no equipment needed."
           }
         }
       ]
@@ -108,577 +93,593 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --bg-deep: #0f0c29;
-            --purple-mid: #302b63;
-            --purple-light: #8b5cf6;
+            --bg-deep: #0a0a0f;
+            --purple: #8b5cf6;
             --green: #4ade80;
             --yellow: #fbbf24;
             --red: #f43f5e;
             --orange: #FF6B35;
             --orange-dark: #FF3D00;
-            --card-bg: rgba(255,255,255,0.06);
             --text-dim: #9ca3af;
         }
 
-        body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: var(--bg-deep);
+        html, body {
+            width: 100%;
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+            min-height: 100dvh;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #0a0a0f;
             overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        /* Animated background particles */
-        .bg-particles {
+        /* === AURORA BACKGROUND === */
+        .aurora-bg {
             position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            pointer-events: none;
+            inset: 0;
             z-index: 0;
             overflow: hidden;
+            pointer-events: none;
         }
-        .bg-particle {
+        .aurora-blob {
             position: absolute;
             border-radius: 50%;
-            background: var(--purple-light);
-            opacity: 0.15;
-            animation: floatUp linear infinite;
+            filter: blur(120px);
+            opacity: 0.4;
+            animation: auroraDrift 18s ease-in-out infinite;
         }
-        @keyframes floatUp {
-            0% { transform: translateY(100vh) scale(0); opacity: 0; }
-            10% { opacity: 0.2; }
-            90% { opacity: 0.1; }
-            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        .aurora-blob:nth-child(1) {
+            width: 60vw; height: 60vw;
+            background: radial-gradient(circle, #8b5cf6, #6366f1, transparent);
+            top: -20%; left: -10%;
+            animation-delay: 0s;
+        }
+        .aurora-blob:nth-child(2) {
+            width: 50vw; height: 50vw;
+            background: radial-gradient(circle, #f43f5e, #ec4899, transparent);
+            top: 40%; right: -15%;
+            animation-delay: -6s;
+        }
+        .aurora-blob:nth-child(3) {
+            width: 55vw; height: 55vw;
+            background: radial-gradient(circle, #4ade80, #38bdf8, transparent);
+            bottom: -20%; left: 20%;
+            animation-delay: -12s;
+        }
+        @keyframes auroraDrift {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(5vw, 3vh) scale(1.15); }
+            50% { transform: translate(-3vw, -5vh) scale(0.9); }
+            75% { transform: translate(-5vw, 2vh) scale(1.1); }
         }
 
-        .container {
-            max-width: 640px;
-            width: 100%;
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            border-radius: 24px;
-            padding: 36px 28px;
-            border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-            text-align: center;
+        /* === MAIN LAYOUT - FULL PAGE === */
+        .main-app {
             position: relative;
             z-index: 1;
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 24px 60px;
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        h1 {
-            font-size: 2rem;
-            color: white;
-            margin-bottom: 4px;
-        }
-
-        .subtitle {
-            color: #a78bfa;
-            font-size: 0.9rem;
-            margin-bottom: 12px;
-        }
-
-        /* Stats Bar */
-        .stats-bar {
+        /* === TOP BAR === */
+        .top-bar {
             display: flex;
             justify-content: center;
-            gap: 20px;
-            margin-bottom: 24px;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 32px;
             flex-wrap: wrap;
         }
-        .stat-item {
+        .top-btn {
+            width: 44px; height: 44px;
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.06);
+            color: rgba(255,255,255,0.6);
+            font-size: 1.2rem;
+            cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 6px;
-            font-size: 0.82rem;
-            color: var(--text-dim);
-            background: rgba(255,255,255,0.06);
-            padding: 8px 14px;
-            border-radius: 20px;
+            justify-content: center;
+            transition: all 0.25s ease;
+            backdrop-filter: blur(10px);
         }
-        .stat-value {
+        .top-btn:hover, .top-btn.active { background: rgba(255,255,255,0.14); color: white; transform: scale(1.08); }
+        .top-btn.music-on { color: var(--green); border-color: rgba(74,222,128,0.4); box-shadow: 0 0 16px rgba(74,222,128,0.2); }
+
+        /* === HEADER === */
+        .app-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .app-header h1 {
+            font-size: clamp(2rem, 6vw, 3.2rem);
+            font-weight: 900;
             color: white;
-            font-weight: 700;
-            font-size: 1.1rem;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
         }
-        .streak-fire {
-            animation: firePulse 1s ease-in-out infinite;
+        .app-header h1 .gradient-text {
+            background: linear-gradient(135deg, #8b5cf6, #f43f5e, #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
-        @keyframes firePulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.3); }
+        .app-header .tagline {
+            color: rgba(255,255,255,0.4);
+            font-size: 1.05rem;
+            font-weight: 500;
+            margin-top: 6px;
         }
 
-        /* Difficulty Buttons */
-        .difficulty-row {
+        /* === STATS BAR === */
+        .stats-row {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+        .stat-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 18px;
+            padding: 16px 22px;
+            text-align: center;
+            backdrop-filter: blur(12px);
+            min-width: 90px;
+            transition: transform 0.3s ease;
+        }
+        .stat-card:hover { transform: translateY(-3px); }
+        .stat-card .stat-icon { font-size: 1.5rem; display: block; margin-bottom: 4px; }
+        .stat-card .stat-num { font-size: 1.8rem; font-weight: 900; color: white; display: block; }
+        .stat-card .stat-label { font-size: 0.75rem; color: rgba(255,255,255,0.4); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .fire-spin { animation: firePulse 1s ease-in-out infinite; display: inline-block; }
+        @keyframes firePulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.35)} }
+
+        /* === DIFFICULTY === */
+        .diff-bar {
             display: flex;
             gap: 10px;
             justify-content: center;
             margin-bottom: 24px;
-            flex-wrap: wrap;
+            width: 100%;
+            max-width: 540px;
         }
         .diff-btn {
-            padding: 12px 24px;
-            border-radius: 50px;
+            flex: 1;
+            padding: 16px 12px;
+            border-radius: 18px;
             border: 2px solid transparent;
-            font-size: 1rem;
-            font-weight: 700;
+            font-size: 1.05rem;
+            font-weight: 800;
             cursor: pointer;
             transition: all 0.3s ease;
             color: white;
-            background: rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(8px);
             position: relative;
-            overflow: hidden;
+            text-align: center;
             outline: none;
+            min-width: 0;
         }
-        .diff-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.3); }
-        .diff-btn:active { transform: scale(0.95); }
+        .diff-btn:hover { transform: translateY(-2px); }
+        .diff-btn:active { transform: scale(0.96); }
+        .diff-btn.easy { border-color: rgba(74,222,128,0.4); }
+        .diff-btn.easy.active { background: var(--green); color: #0a0a0f; border-color: var(--green); box-shadow: 0 0 40px rgba(74,222,128,0.35); }
+        .diff-btn.medium { border-color: rgba(251,191,36,0.4); }
+        .diff-btn.medium.active { background: var(--yellow); color: #0a0a0f; border-color: var(--yellow); box-shadow: 0 0 40px rgba(251,191,36,0.35); }
+        .diff-btn.beast { border-color: rgba(244,63,94,0.4); }
+        .diff-btn.beast.active { background: var(--red); color: white; border-color: var(--red); box-shadow: 0 0 40px rgba(244,63,94,0.5); animation: beastPulse 0.7s ease-in-out infinite; }
+        @keyframes beastPulse { 0%,100%{box-shadow:0 0 40px rgba(244,63,94,0.5)} 50%{box-shadow:0 0 70px rgba(244,63,94,0.8)} }
 
-        .diff-btn.easy { border-color: #4ade80; color: #4ade80; }
-        .diff-btn.easy.active { background: #4ade80; color: #0f0c29; box-shadow: 0 0 30px rgba(74,222,128,0.4); }
-
-        .diff-btn.medium { border-color: #fbbf24; color: #fbbf24; }
-        .diff-btn.medium.active { background: #fbbf24; color: #0f0c29; box-shadow: 0 0 30px rgba(251,191,36,0.4); }
-
-        .diff-btn.beast { border-color: #f43f5e; color: #f43f5e; }
-        .diff-btn.beast.active { background: #f43f5e; color: white; box-shadow: 0 0 30px rgba(244,63,94,0.5); animation: beastPulse 0.8s ease-in-out infinite; }
-        @keyframes beastPulse {
-            0%, 100% { box-shadow: 0 0 30px rgba(244,63,94,0.5); }
-            50% { box-shadow: 0 0 60px rgba(244,63,94,0.9); }
-        }
-
-        /* Generate Button */
+        /* === GENERATE BUTTON === */
+        .gen-wrap { margin-bottom: 24px; width: 100%; max-width: 500px; }
         .generate-btn {
+            width: 100%;
             background: linear-gradient(135deg, #8b5cf6, #6366f1);
             color: white;
             border: none;
-            padding: 18px 50px;
-            font-size: 1.3rem;
-            font-weight: 800;
-            border-radius: 50px;
+            padding: 22px 20px;
+            font-size: 1.35rem;
+            font-weight: 900;
+            border-radius: 20px;
             cursor: pointer;
             transition: all 0.3s ease;
-            letter-spacing: 1px;
-            box-shadow: 0 10px 40px rgba(99,102,241,0.4);
-            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+            box-shadow: 0 12px 50px rgba(99,102,241,0.35);
             outline: none;
         }
-        .generate-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 50px rgba(99,102,241,0.6);
-        }
-        .generate-btn:active, .generate-btn.spinning {
-            transform: scale(0.93);
-            animation: spinShake 0.5s ease-in-out;
-        }
-        @keyframes spinShake {
-            0% { transform: rotate(0deg) scale(1); }
-            25% { transform: rotate(-5deg) scale(1.05); }
-            50% { transform: rotate(5deg) scale(1.1); }
-            75% { transform: rotate(-3deg) scale(1.05); }
-            100% { transform: rotate(0deg) scale(1); }
-        }
+        .generate-btn:hover { transform: translateY(-3px); box-shadow: 0 18px 60px rgba(99,102,241,0.5); }
+        .generate-btn:active, .generate-btn.spinning { transform: scale(0.94); animation: spinShake 0.5s ease-in-out; }
+        @keyframes spinShake { 0%{transform:rotate(0deg)scale(1)} 25%{transform:rotate(-5deg)scale(1.04)} 50%{transform:rotate(5deg)scale(1.08)} 75%{transform:rotate(-3deg)scale(1.04)} 100%{transform:rotate(0deg)scale(1)} }
 
+        /* === TIMER TOGGLE === */
+        .timer-toggle-row { margin-bottom: 20px; }
         .timer-toggle {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            margin: 0 0 24px;
-            padding: 8px 18px;
+            padding: 12px 24px;
             border-radius: 50px;
-            background: rgba(255,255,255,0.06);
+            background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.1);
             color: var(--text-dim);
-            font-size: 0.85rem;
+            font-size: 0.95rem;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-weight: 600;
-        }
-        .timer-toggle:hover { background: rgba(255,255,255,0.12); }
-        .timer-toggle.active { border-color: var(--orange); color: var(--orange); background: rgba(255,107,53,0.15); box-shadow: 0 0 15px rgba(255,107,53,0.3); }
-
-        /* Timer Bar */
-        .timer-bar-wrap {
-            display: none;
-            margin-bottom: 24px;
-            padding: 16px 20px;
-            background: rgba(255,255,255,0.04);
-            border-radius: 16px;
-            border: 1px solid rgba(255,255,255,0.08);
-        }
-        .timer-bar-wrap.show { display: block; }
-
-        .timer-exercise-label {
-            color: white;
-            font-size: 1rem;
             font-weight: 700;
+            backdrop-filter: blur(8px);
+        }
+        .timer-toggle:hover { background: rgba(255,255,255,0.1); }
+        .timer-toggle.active { border-color: var(--orange); color: var(--orange); background: rgba(255,107,53,0.15); box-shadow: 0 0 20px rgba(255,107,53,0.25); }
+
+        /* === TIMER DISPLAY === */
+        .timer-panel {
+            display: none;
+            width: 100%;
+            max-width: 500px;
+            padding: 24px 20px;
+            background: rgba(255,255,255,0.04);
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.08);
+            margin-bottom: 24px;
+            backdrop-filter: blur(10px);
+            text-align: center;
+        }
+        .timer-panel.show { display: block; }
+        .timer-ex-name {
+            color: white;
+            font-size: 1.15rem;
+            font-weight: 800;
             margin-bottom: 4px;
         }
-        .timer-detail {
-            color: var(--text-dim);
-            font-size: 0.82rem;
-            margin-bottom: 10px;
-        }
-        .timer-countdown {
-            font-size: 3rem;
+        .timer-sub { color: var(--text-dim); font-size: 0.85rem; margin-bottom: 12px; }
+        .timer-big-time {
+            font-size: 5rem;
             font-weight: 900;
             font-variant-numeric: tabular-nums;
             color: var(--orange);
-            margin-bottom: 8px;
             transition: color 0.3s ease;
+            line-height: 1;
+            margin-bottom: 10px;
         }
-        .timer-countdown.rest { color: var(--green); }
-        .timer-countdown.urgent { color: var(--red); animation: urgentPulse 0.5s ease-in-out; }
-        @keyframes urgentPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.15); }
-        }
+        .timer-big-time.rest { color: var(--green); }
+        .timer-big-time.urgent { color: var(--red); animation: urgentPulse 0.4s ease-in-out; }
+        @keyframes urgentPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.12)} }
 
-        .timer-controls {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        .timer-ctrl-btn {
-            padding: 8px 20px;
-            border-radius: 50px;
-            border: 1px solid rgba(255,255,255,0.15);
-            background: rgba(255,255,255,0.05);
-            color: #c4b5fd;
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 700;
-            transition: all 0.3s ease;
-            outline: none;
-        }
-        .timer-ctrl-btn:hover { background: rgba(255,255,255,0.12); }
-        .timer-ctrl-btn.start { background: var(--green); border-color: var(--green); color: #0f0c29; }
-        .timer-ctrl-btn.pause { background: var(--yellow); border-color: var(--yellow); color: #0f0c29; }
-        .timer-ctrl-btn.skip { border-color: rgba(255,255,255,0.3); }
-
-        /* Progress Bar */
-        .progress-bar-outer {
-            width: 100%;
-            height: 6px;
-            background: rgba(255,255,255,0.08);
-            border-radius: 3px;
-            margin-bottom: 14px;
+        .progress-wrap {
+            width: 100%; height: 8px;
+            background: rgba(255,255,255,0.07);
+            border-radius: 4px;
+            margin-bottom: 18px;
             overflow: hidden;
         }
-        .progress-bar-inner {
+        .progress-fill {
             height: 100%;
-            border-radius: 3px;
+            border-radius: 4px;
             transition: width 0.5s ease;
             background: linear-gradient(90deg, var(--orange-dark), var(--orange));
         }
-        .progress-bar-inner.complete { background: linear-gradient(90deg, var(--green), #22c55e); }
+        .progress-fill.done { background: linear-gradient(90deg, var(--green), #22c55e); }
 
-        /* Motivational toast */
-        .motivation-toast {
-            color: var(--green);
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 12px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            min-height: 22px;
+        .timer-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
-        .motivation-toast.show { opacity: 1; }
-
-        /* Install button */
-        .install-btn {
-            display: block;
-            width: 100%;
-            max-width: 340px;
-            margin: 20px auto 0;
-            padding: 14px 28px;
-            font-size: 1.05rem;
-            font-weight: 700;
-            border: 2px dashed rgba(255,255,255,0.3);
-            border-radius: 16px;
+        .timer-btn {
+            padding: 12px 28px;
+            border-radius: 50px;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.06);
+            color: #c4b5fd;
             cursor: pointer;
-            color: var(--orange);
-            background: rgba(255,107,53,0.1);
+            font-size: 0.95rem;
+            font-weight: 700;
             transition: all 0.3s ease;
             outline: none;
         }
-        .install-btn:hover { background: rgba(255,107,53,0.2); border-color: var(--orange); transform: translateY(-2px); }
-        .install-btn:active { transform: scale(0.96); }
+        .timer-btn:hover { background: rgba(255,255,255,0.14); }
+        .timer-btn.go { background: var(--green); border-color: var(--green); color: #0a0a0f; }
+        .timer-btn.pause { background: var(--yellow); border-color: var(--yellow); color: #0a0a0f; }
 
-        /* Workout Card */
-        .workout-card {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 24px;
-            margin-bottom: 18px;
-            border: 1px solid rgba(255,255,255,0.08);
+        /* === MOTIVATION === */
+        .motto-bar {
+            color: var(--green);
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            min-height: 24px;
+            text-align: center;
         }
-        .workout-header {
+        .motto-bar.show { opacity: 1; }
+
+        /* === WORKOUT CARD === */
+        .workout-section {
+            width: 100%;
+            max-width: 600px;
+            display: none;
+        }
+        .workout-section.show { display: block; }
+        .workout-top-line {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            margin-bottom: 18px;
+            gap: 10px;
+            margin-bottom: 20px;
             flex-wrap: wrap;
         }
-        .workout-title { font-size: 1.2rem; color: white; font-weight: 700; }
-        .total-badge {
-            background: rgba(139,92,246,0.3);
-            color: #c4b5fd;
-            padding: 4px 14px;
-            border-radius: 20px;
-            font-size: 0.82rem;
-            font-weight: 600;
+        .workout-top-line .w-title {
+            font-size: 1.3rem;
+            color: white;
+            font-weight: 800;
         }
-        .exercise-list { list-style: none; text-align: left; }
+        .workout-top-line .w-badge {
+            background: rgba(139,92,246,0.25);
+            color: #c4b5fd;
+            padding: 5px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
 
-        .exercise-item {
+        .ex-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+        .ex-item {
             display: flex;
             align-items: center;
-            padding: 12px 14px;
-            margin-bottom: 6px;
+            padding: 16px 16px;
             background: rgba(255,255,255,0.03);
-            border-radius: 14px;
-            transition: all 0.3s ease;
+            border-radius: 16px;
             border: 1px solid transparent;
+            transition: all 0.3s ease;
         }
-        .exercise-item.active {
-            background: rgba(139,92,246,0.15);
-            border-color: rgba(139,92,246,0.4);
-            box-shadow: 0 0 20px rgba(139,92,246,0.2);
+        .ex-item.active {
+            background: rgba(139,92,246,0.12);
+            border-color: rgba(139,92,246,0.35);
+            box-shadow: 0 0 25px rgba(139,92,246,0.15);
         }
-        .exercise-item.current {
-            animation: currentGlow 2s ease-in-out infinite;
+        .ex-item.current {
+            animation: glowPulse 1.5s ease-in-out infinite;
         }
-        @keyframes currentGlow {
-            0%, 100% { box-shadow: 0 0 10px rgba(255,107,53,0.3); }
-            50% { box-shadow: 0 0 25px rgba(255,107,53,0.6); }
-        }
-        .exercise-emoji {
-            font-size: 1.7rem;
-            margin-right: 12px;
-            min-width: 40px;
-            text-align: center;
-        }
-        .exercise-info { flex: 1; }
-        .exercise-name { color: white; font-weight: 600; font-size: 0.95rem; }
-        .exercise-detail { color: #a5b4fc; font-size: 0.82rem; margin-top: 2px; }
-        .exercise-reps { font-size: 0.72rem; color: #6b7280; margin-top: 2px; }
+        @keyframes glowPulse { 0%,100%{box-shadow:0 0 12px rgba(255,107,53,0.2)} 50%{box-shadow:0 0 30px rgba(255,107,53,0.5)} }
 
-        .exercise-check {
-            width: 30px; height: 30px;
+        .ex-emoji { font-size: 2rem; margin-right: 14px; min-width: 44px; text-align: center; }
+        .ex-body { flex: 1; }
+        .ex-name { color: white; font-weight: 700; font-size: 1rem; }
+        .ex-detail { color: #a5b4fc; font-size: 0.85rem; margin-top: 2px; }
+        .ex-tip { font-size: 0.72rem; color: #6b7280; margin-top: 2px; }
+
+        .ex-tick {
+            width: 34px; height: 34px;
             border-radius: 50%;
-            border: 2px solid rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.18);
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             color: transparent;
             flex-shrink: 0;
-            margin-left: 8px;
+            margin-left: 10px;
         }
-        .exercise-check:hover { border-color: rgba(255,255,255,0.5); }
-        .exercise-check.done { background: var(--green); border-color: var(--green); color: white; box-shadow: 0 0 15px rgba(74,222,128,0.4); }
-        .exercise-check.skipped { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.15); color: var(--text-dim); }
+        .ex-tick:hover { border-color: rgba(255,255,255,0.4); }
+        .ex-tick.done { background: var(--green); border-color: var(--green); color: white; box-shadow: 0 0 18px rgba(74,222,128,0.35); }
+        .ex-tick.skipped { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.1); color: var(--text-dim); }
 
-        /* Actions row */
-        .actions-row {
+        /* === ACTIONS === */
+        .action-row {
             display: flex;
             gap: 10px;
             justify-content: center;
             flex-wrap: wrap;
+            margin-top: 20px;
+            width: 100%;
         }
         .action-btn {
-            padding: 10px 20px;
+            padding: 12px 26px;
             border-radius: 50px;
-            border: 1px solid rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.12);
             background: rgba(255,255,255,0.05);
             color: #c4b5fd;
             cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 600;
+            font-size: 0.9rem;
+            font-weight: 700;
             transition: all 0.3s ease;
             outline: none;
         }
-        .action-btn:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.25); }
-        .action-btn.share-btn { background: rgba(139,92,246,0.2); border-color: rgba(139,92,246,0.3); }
+        .action-btn:hover { background: rgba(255,255,255,0.12); }
+        .action-btn.copy { background: rgba(139,92,246,0.2); border-color: rgba(139,92,246,0.3); }
 
-        /* History */
-        .history-section { margin-top: 24px; text-align: left; }
+        /* === HISTORY === */
+        .history-section {
+            width: 100%;
+            max-width: 600px;
+            margin-top: 36px;
+        }
         .history-title {
             color: #a78bfa;
             font-size: 0.85rem;
-            font-weight: 700;
-            margin-bottom: 10px;
+            font-weight: 800;
+            margin-bottom: 12px;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-        .history-item {
+        .h-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 14px;
+            padding: 12px 16px;
             background: rgba(255,255,255,0.03);
-            border-radius: 10px;
+            border-radius: 12px;
             margin-bottom: 6px;
             color: var(--text-dim);
-            font-size: 0.82rem;
+            font-size: 0.85rem;
         }
-        .history-diff {
-            padding: 2px 10px;
+        .h-diff {
+            padding: 3px 12px;
             border-radius: 12px;
             font-size: 0.72rem;
             font-weight: 700;
         }
-        .history-diff.easy { background: rgba(74,222,128,0.2); color: #4ade80; }
-        .history-diff.medium { background: rgba(251,191,36,0.2); color: #fbbf24; }
-        .history-diff.beast { background: rgba(244,63,94,0.2); color: #f43f5e; }
-        .no-history { color: #6b7280; font-style: italic; text-align: center; padding: 14px; }
+        .h-diff.easy { background: rgba(74,222,128,0.2); color: #4ade80; }
+        .h-diff.medium { background: rgba(251,191,36,0.2); color: #fbbf24; }
+        .h-diff.beast { background: rgba(244,63,94,0.2); color: #f43f5e; }
+        .no-history { color: #6b7280; font-style: italic; text-align: center; padding: 20px; font-size: 0.9rem; }
 
-        /* Confetti */
-        .confetti-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 999; }
-        .confetti-piece {
+        /* === INSTALL BTN === */
+        .install-btn {
+            display: none;
+            width: 100%;
+            max-width: 400px;
+            margin: 24px auto 0;
+            padding: 16px 28px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            border: 2px dashed rgba(255,255,255,0.25);
+            border-radius: 18px;
+            cursor: pointer;
+            color: var(--orange);
+            background: rgba(255,107,53,0.08);
+            transition: all 0.3s ease;
+            text-align: center;
+            outline: none;
+        }
+        .install-btn:hover { background: rgba(255,107,53,0.16); border-color: var(--orange); transform: translateY(-2px); }
+        .install-btn:active { transform: scale(0.96); }
+
+        /* === CONFETTI === */
+        .confetti-layer { position: fixed; inset: 0; pointer-events: none; z-index: 999; }
+        .c-piece {
             position: absolute;
             border-radius: 3px;
-            animation: confettiFall 2.5s ease-out forwards;
+            animation: confettiDrop 2.5s ease-out forwards;
         }
-        @keyframes confettiFall {
-            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
-        }
+        @keyframes confettiDrop { 0%{transform:translateY(-100vh)rotate(0deg);opacity:1} 100%{transform:translateY(110vh)rotate(720deg);opacity:0} }
 
-        /* Sound toggle */
-        .sound-toggle {
-            position: absolute;
-            top: 16px;
-            right: 20px;
-            background: none;
-            border: none;
-            font-size: 1.3rem;
-            cursor: pointer;
-            opacity: 0.5;
-            transition: opacity 0.3s ease;
-            z-index: 2;
-        }
-        .sound-toggle:hover { opacity: 1; }
-
-        /* Responsive */
+        /* === RESPONSIVE === */
         @media (max-width: 480px) {
-            .container { padding: 24px 16px; border-radius: 20px; }
-            h1 { font-size: 1.5rem; }
-            .generate-btn { font-size: 1.05rem; padding: 14px 32px; }
-            .diff-btn { padding: 10px 16px; font-size: 0.85rem; }
-            .stats-bar { gap: 10px; }
-            .stat-item { padding: 6px 12px; font-size: 0.75rem; }
-            .timer-countdown { font-size: 2.4rem; }
+            .main-app { padding: 24px 14px 48px; }
+            .app-header h1 { font-size: 1.8rem; }
+            .generate-btn { font-size: 1.1rem; padding: 18px 16px; }
+            .diff-btn { padding: 14px 8px; font-size: 0.9rem; }
+            .timer-big-time { font-size: 3.5rem; }
+            .ex-item { padding: 12px 12px; }
+            .ex-emoji { font-size: 1.6rem; min-width: 36px; margin-right: 10px; }
+            .stat-card { padding: 12px 14px; min-width: 70px; }
+            .stat-card .stat-num { font-size: 1.4rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="bg-particles" id="bgParticles"></div>
-    <div class="confetti-overlay" id="confetti"></div>
+    <div class="aurora-bg">
+        <div class="aurora-blob"></div>
+        <div class="aurora-blob"></div>
+        <div class="aurora-blob"></div>
+    </div>
 
-    <div class="container">
-        <!-- Sound Toggle -->
-        <button class="sound-toggle" id="soundToggle" onclick="toggleSound()" title="Toggle sound">🔊</button>
+    <div class="confetti-layer" id="confetti"></div>
 
-        <h1>💪 Random Workout Generator</h1>
-        <p class="subtitle">Free home fitness — no equipment needed!</p>
+    <div class="main-app">
+        <!-- Top bar: sound + music -->
+        <div class="top-bar">
+            <button class="top-btn" id="soundBtn" onclick="toggleSound()" title="Toggle sound effects">🔊</button>
+            <button class="top-btn" id="musicBtn" onclick="toggleMusic()" title="Toggle background music">🎵</button>
+        </div>
 
-        <!-- Stats Bar -->
-        <div class="stats-bar">
-            <div class="stat-item">
-                <span class="streak-fire">🔥</span>
-                <span><span class="stat-value" id="streakCount">0</span> day streak</span>
+        <!-- Header -->
+        <div class="app-header">
+            <h1>💪 <span class="gradient-text">Random Workout</span> Generator</h1>
+            <p class="tagline">Free home fitness — no equipment needed!</p>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <span class="stat-icon"><span class="fire-spin">🔥</span></span>
+                <span class="stat-num" id="streakCount">0</span>
+                <span class="stat-label">day streak</span>
             </div>
-            <div class="stat-item">
-                <span>💪</span>
-                <span><span class="stat-value" id="totalWorkouts">0</span> workouts</span>
+            <div class="stat-card">
+                <span class="stat-icon">💪</span>
+                <span class="stat-num" id="totalWorkouts">0</span>
+                <span class="stat-label">workouts</span>
             </div>
-            <div class="stat-item">
-                <span>⚡</span>
-                <span><span class="stat-value" id="totalReps">0</span> exercises</span>
+            <div class="stat-card">
+                <span class="stat-icon">⚡</span>
+                <span class="stat-num" id="totalReps">0</span>
+                <span class="stat-label">exercises</span>
             </div>
         </div>
 
         <!-- Difficulty -->
-        <div class="difficulty-row" id="difficultyRow">
+        <div class="diff-bar" id="diffBar">
             <button class="diff-btn easy active" data-diff="easy">🌱 Easy</button>
             <button class="diff-btn medium" data-diff="medium">⚡ Medium</button>
             <button class="diff-btn beast" data-diff="beast">💀 Beast</button>
         </div>
 
         <!-- Generate -->
-        <button class="generate-btn" id="generateBtn" onclick="generateWorkout()">
-            🎲 GENERATE WORKOUT
-        </button>
-
-        <!-- Timer Toggle -->
-        <div class="timer-toggle" id="timerToggle" onclick="toggleTimerMode()">
-            ⏱️ Workout Timer Mode
+        <div class="gen-wrap">
+            <button class="generate-btn" id="genBtn" onclick="gen()">🎲 GENERATE WORKOUT</button>
         </div>
 
-        <!-- Timer Display -->
-        <div class="timer-bar-wrap" id="timerBar">
-            <div class="timer-exercise-label" id="timerLabel">Ready?</div>
-            <div class="timer-detail" id="timerDetail">Press START to begin!</div>
-            <div class="progress-bar-outer"><div class="progress-bar-inner" id="progressBar" style="width:0%"></div></div>
-            <div class="timer-countdown" id="timerCountdown">00:00</div>
-            <div class="timer-controls">
-                <button class="timer-ctrl-btn start" id="timerStartBtn" onclick="startTimer()">▶️ START</button>
-                <button class="timer-ctrl-btn pause" id="timerPauseBtn" onclick="pauseTimer()" style="display:none;">⏸️ PAUSE</button>
-                <button class="timer-ctrl-btn skip" onclick="skipExercise()">⏭️ Skip</button>
-                <button class="timer-ctrl-btn" onclick="resetTimer()">🔄 Reset</button>
+        <!-- Timer toggle -->
+        <div class="timer-toggle-row">
+            <div class="timer-toggle" id="timerToggle" onclick="toggleTimerMode()">⏱️ Workout Timer Mode</div>
+        </div>
+
+        <!-- Timer -->
+        <div class="timer-panel" id="timerPanel">
+            <div class="timer-ex-name" id="timerExName">Ready?</div>
+            <div class="timer-sub" id="timerSub">Press START to begin!</div>
+            <div class="progress-wrap"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+            <div class="timer-big-time" id="timerBig">00:00</div>
+            <div class="timer-actions">
+                <button class="timer-btn go" id="tStartBtn" onclick="startTimer()">▶️ START</button>
+                <button class="timer-btn pause" id="tPauseBtn" onclick="pauseTimer()" style="display:none">⏸️ PAUSE</button>
+                <button class="timer-btn" onclick="skipEx()">⏭️ Skip</button>
+                <button class="timer-btn" onclick="resetTimer()">🔄 Reset</button>
             </div>
         </div>
 
-        <!-- Motivation -->
-        <div class="motivation-toast" id="motivation"></div>
+        <!-- Motto -->
+        <div class="motto-bar" id="motto"></div>
 
-        <!-- Workout Result -->
-        <div id="workoutResult"></div>
+        <!-- Workout -->
+        <div class="workout-section" id="workoutSec"></div>
 
         <!-- Actions -->
-        <div class="actions-row" id="actionsRow" style="display:none;">
-            <button class="action-btn" onclick="generateWorkout()">🔄 Re-roll</button>
-            <button class="action-btn share-btn" onclick="shareWorkout()">📋 Copy to Clipboard</button>
+        <div class="action-row" id="actionRow" style="display:none">
+            <button class="action-btn" onclick="gen()">🔄 Re-roll</button>
+            <button class="action-btn copy" onclick="copyWorkout()">📋 Copy</button>
         </div>
 
         <!-- History -->
-        <div class="history-section" id="historySection">
+        <div class="history-section" id="histSec">
             <div class="history-title">📜 Workout History</div>
-            <div id="historyList">
-                <p class="no-history">No workouts yet — generate your first one! 🏃</p>
-            </div>
+            <div id="histList"><p class="no-history">No workouts yet — generate your first one! 🏃</p></div>
         </div>
 
         <!-- Install -->
-        <button class="install-btn" id="installBtn" style="display:none;" onclick="installApp()">
-            📲 Add to Home Screen
-        </button>
+        <button class="install-btn" id="installBtn" onclick="installApp()">📲 Add to Home Screen</button>
     </div>
 
-    <!-- SEO Content -->
-    <section style="max-width:700px; margin:40px auto 20px; padding:20px; color:#9ca3af; font-size:0.8rem; line-height:1.6; text-align:center; border-top:1px solid rgba(255,255,255,0.05); position:relative;z-index:1;">
-        <h2 style="color:#a78bfa; font-size:1rem; margin-bottom:10px;">About the Random Workout Generator</h2>
-        <p>
-            This <strong>random workout generator</strong> creates a unique, randomized exercise routine every time you click.
-            Choose between <strong>Easy</strong>, <strong>Medium</strong>, and <strong>Beast</strong> difficulty levels.
-            All exercises are <strong>bodyweight only</strong> — no equipment, no gym membership, and completely <strong>free</strong>.
-            Whether you need a <strong>daily workout generator</strong>, a <strong>random exercise routine</strong> for home fitness,
-            or a <strong>free workout generator</strong> to share with friends, this tool has you covered.
-            Perfect for beginners, kids, teens, and anyone wanting to stay active at home.
-        </p>
-    </section>
-
     <script>
-    // ==================== EXERCISE DATABASE ====================
+    // ==================== DATA ====================
     const exercises = {
         easy: [
             { name: "Jumping Jacks", detail: "30 seconds", emoji: "⭐", reps: "Do them at your own pace", seconds: 30, rest: 15 },
@@ -688,576 +689,396 @@
             { name: "Plank", detail: "20 seconds", emoji: "🧘", reps: "Keep your body in a straight line", seconds: 20, rest: 20 },
             { name: "Glute Bridges", detail: "12 reps", emoji: "🌉", reps: "Lie on back, lift hips up", seconds: 40, rest: 15 },
             { name: "Arm Circles", detail: "30 seconds", emoji: "🌀", reps: "Big circles forward, then backward", seconds: 30, rest: 15 },
-            { name: "Standing Calf Raises", detail: "15 reps", emoji: "🦶", reps: "Rise up on your toes", seconds: 35, rest: 15 },
-            { name: "Knee Push-ups", detail: "8 reps", emoji: "🙆", reps: "Push-ups on your knees — you got this!", seconds: 40, rest: 20 },
-            { name: "Marching in Place", detail: "45 seconds", emoji: "🪖", reps: "Lift knees high, swing arms", seconds: 45, rest: 15 },
-            { name: "Side Leg Raises", detail: "10 each side", emoji: "🦿", reps: "Lie on side, lift top leg", seconds: 40, rest: 15 },
+            { name: "Calf Raises", detail: "15 reps", emoji: "🦶", reps: "Rise up on your toes", seconds: 35, rest: 15 },
+            { name: "Knee Push-ups", detail: "8 reps", emoji: "🙆", reps: "Push-ups on your knees", seconds: 40, rest: 20 },
+            { name: "March in Place", detail: "45 seconds", emoji: "🪖", reps: "Lift knees high, swing arms", seconds: 45, rest: 15 },
+            { name: "Side Leg Raises", detail: "10 each", emoji: "🦿", reps: "Lie on side, lift top leg", seconds: 40, rest: 15 },
             { name: "Toe Touches", detail: "15 reps", emoji: "👆", reps: "Bend forward, touch your toes", seconds: 35, rest: 15 },
-            { name: "Bird Dog", detail: "8 each side", emoji: "🐕", reps: "On all fours, extend opposite arm & leg", seconds: 40, rest: 20 },
-            { name: "Wall Sit", detail: "20 seconds", emoji: "🪑", reps: "Back against wall, slide down like sitting", seconds: 20, rest: 20 },
-            { name: "Cat-Cow Stretch", detail: "10 reps", emoji: "🐱", reps: "Arch and round your back on all fours", seconds: 30, rest: 15 },
+            { name: "Bird Dog", detail: "8 each side", emoji: "🐕", reps: "Extend opposite arm & leg on all fours", seconds: 40, rest: 20 },
+            { name: "Wall Sit", detail: "20 seconds", emoji: "🪑", reps: "Back against wall, slide down", seconds: 20, rest: 20 },
+            { name: "Cat-Cow", detail: "10 reps", emoji: "🐱", reps: "Arch and round your back", seconds: 30, rest: 15 },
         ],
         medium: [
             { name: "Push-ups", detail: "12 reps", emoji: "💪", reps: "Full push-ups — chest to ground!", seconds: 45, rest: 25 },
             { name: "Squats", detail: "20 reps", emoji: "🦵", reps: "Go deep, explode up", seconds: 50, rest: 25 },
-            { name: "Mountain Climbers", detail: "30 seconds", emoji: "⛰️", reps: "Fast knees to chest in plank position", seconds: 30, rest: 20 },
+            { name: "Mountain Climbers", detail: "30 seconds", emoji: "⛰️", reps: "Fast knees to chest in plank", seconds: 30, rest: 20 },
             { name: "Burpees", detail: "8 reps", emoji: "🔥", reps: "Squat → plank → push-up → jump!", seconds: 45, rest: 30 },
             { name: "Plank", detail: "45 seconds", emoji: "🧘", reps: "Hold it steady, no sagging", seconds: 45, rest: 25 },
-            { name: "Jump Squats", detail: "10 reps", emoji: "🚀", reps: "Squat down, explode up, land soft", seconds: 40, rest: 25 },
-            { name: "Bicycle Crunches", detail: "20 reps", emoji: "🚲", reps: "Elbow to opposite knee, keep moving", seconds: 45, rest: 20 },
+            { name: "Jump Squats", detail: "10 reps", emoji: "🚀", reps: "Squat down, explode up", seconds: 40, rest: 25 },
+            { name: "Bicycle Crunches", detail: "20 reps", emoji: "🚲", reps: "Elbow to opposite knee", seconds: 45, rest: 20 },
             { name: "Tricep Dips", detail: "12 reps", emoji: "🪑", reps: "Use a chair or low table", seconds: 40, rest: 25 },
             { name: "High Knees", detail: "40 seconds", emoji: "🏃", reps: "Run in place, knees above hips", seconds: 40, rest: 20 },
-            { name: "Reverse Lunges", detail: "12 each leg", emoji: "↩️", reps: "Step backward instead of forward", seconds: 50, rest: 25 },
+            { name: "Reverse Lunges", detail: "12 each", emoji: "↩️", reps: "Step backward instead of forward", seconds: 50, rest: 25 },
             { name: "Flutter Kicks", detail: "30 seconds", emoji: "🏊", reps: "Lie on back, kick legs up and down", seconds: 30, rest: 20 },
-            { name: "Plank Jacks", detail: "20 reps", emoji: "🤸", reps: "Plank position, jump feet apart and together", seconds: 40, rest: 20 },
+            { name: "Plank Jacks", detail: "20 reps", emoji: "🤸", reps: "Plank position, jump feet apart+together", seconds: 40, rest: 20 },
             { name: "Russian Twists", detail: "20 reps", emoji: "🥨", reps: "Sit leaning back, twist side to side", seconds: 45, rest: 20 },
-            { name: "Donkey Kicks", detail: "15 each leg", emoji: "🦵", reps: "On all fours, kick one leg up behind", seconds: 40, rest: 20 },
-            { name: "Star Jumps", detail: "15 reps", emoji: "⭐", reps: "Jump up spreading arms and legs wide!", seconds: 35, rest: 25 },
+            { name: "Donkey Kicks", detail: "15 each", emoji: "🦵", reps: "On all fours, kick one leg up", seconds: 40, rest: 20 },
+            { name: "Star Jumps", detail: "15 reps", emoji: "⭐", reps: "Jump spreading arms and legs wide!", seconds: 35, rest: 25 },
         ],
         beast: [
-            { name: "Burpees", detail: "15 reps", emoji: "💀", reps: "Full commitment — no half-reps!", seconds: 55, rest: 30 },
+            { name: "Burpees", detail: "15 reps", emoji: "💀", reps: "Full send — no half-reps!", seconds: 55, rest: 30 },
             { name: "Diamond Push-ups", detail: "10 reps", emoji: "💎", reps: "Hands together forming a diamond", seconds: 45, rest: 30 },
-            { name: "Jump Lunges", detail: "12 each leg", emoji: "⚡", reps: "Switch legs mid-air. explosive!", seconds: 50, rest: 30 },
+            { name: "Jump Lunges", detail: "12 each", emoji: "⚡", reps: "Switch legs mid-air — explosive!", seconds: 50, rest: 30 },
             { name: "Plank to Push-up", detail: "10 reps", emoji: "🔄", reps: "Plank on elbows → push up → repeat", seconds: 50, rest: 30 },
             { name: "Squat Jumps", detail: "20 reps", emoji: "🚀", reps: "Maximum height every rep", seconds: 50, rest: 35 },
             { name: "Mountain Climbers", detail: "60 seconds", emoji: "⛰️", reps: "Sprint pace — don't slow down!", seconds: 60, rest: 25 },
-            { name: "Bulgarian Split Squats", detail: "10 each leg", emoji: "🇧🇬", reps: "Back foot on a chair, deep squat", seconds: 55, rest: 30 },
-            { name: "Side Plank", detail: "30 sec each side", emoji: "🧘", reps: "Stack your feet, hips high", seconds: 60, rest: 25 },
-            { name: "Tuck Jumps", detail: "12 reps", emoji: "🤸", reps: "Jump and pull knees to chest mid-air", seconds: 45, rest: 35 },
+            { name: "Bulgarian Split Squats", detail: "10 each", emoji: "🇧🇬", reps: "Back foot on a chair, deep squat", seconds: 55, rest: 30 },
+            { name: "Side Plank", detail: "30s each side", emoji: "🧘", reps: "Stack your feet, hips high", seconds: 60, rest: 25 },
+            { name: "Tuck Jumps", detail: "12 reps", emoji: "🤸", reps: "Jump and pull knees to chest", seconds: 45, rest: 35 },
             { name: "Wide Push-ups", detail: "12 reps", emoji: "🤲", reps: "Hands wider than shoulder width", seconds: 45, rest: 30 },
             { name: "Crab Walk", detail: "45 seconds", emoji: "🦀", reps: "Hands and feet, belly up — move!", seconds: 45, rest: 30 },
             { name: "Superman Plank", detail: "30 seconds", emoji: "🦸", reps: "Plank but lift opposite arm & leg", seconds: 30, rest: 30 },
-            { name: "Pistol Squats", detail: "5 each leg", emoji: "🔫", reps: "One-leg squat — use a wall for balance", seconds: 50, rest: 30 },
-            { name: "Bear Crawl", detail: "30 seconds", emoji: "🐻", reps: "On hands and feet, crawl forward & back", seconds: 30, rest: 30 },
-            { name: "Burpee + Tuck Jump", detail: "8 reps", emoji: "☠️", reps: "Burpee then tuck jump — ultimate combo!", seconds: 60, rest: 35 },
+            { name: "Pistol Squats", detail: "5 each", emoji: "🔫", reps: "One-leg squat — use a wall for balance", seconds: 50, rest: 30 },
+            { name: "Bear Crawl", detail: "30 seconds", emoji: "🐻", reps: "Crawl forward and back on hands+feet", seconds: 30, rest: 30 },
+            { name: "Burpee+Tuck Jump", detail: "8 reps", emoji: "☠️", reps: "Burpee then tuck jump — ultimate!", seconds: 60, rest: 35 },
         ],
     };
 
-    const motivators = [
+    const mottoes = [
         "You're crushing it! 🔥", "Keep going, you got this! 💪", "Almost there! 🚀",
-        "You're stronger than you think! ⚡", "Don't stop now! 🏆", "Every rep counts! 🎯",
+        "Stronger than you think! ⚡", "Don't stop now! 🏆", "Every rep counts! 🎯",
         "Beast mode activated! 💀", "Push through the burn! 🔥", "One. More. Rep. 🎲",
-        "You're making progress! 📈", "No pain, no gain! 💎", "Legendary effort! 👑",
-        "Stay focused, stay strong! 🧠", "This is your moment! ⭐", "Champion mindset! 🏅",
+        "You're making progress! 📈", "No pain, no gain! 💎", "Legendary! 👑",
+        "Stay focused, stay strong! 🧠", "This is your moment! ⭐", "Champion! 🏅",
     ];
 
-    let currentDifficulty = 'easy';
-    let currentWorkout = null;
-    let workoutHistory = [];
-    let timerEnabled = false;
-    let timerRunning = false;
+    // ==================== STATE ====================
+    let diff = 'easy';
+    let workout = null;
+    let history = [];
+    let timerOn = false;
+    let timerRun = false;
     let timerPaused = false;
-    let timerInterval = null;
-    let currentExIndex = 0;
-    let currentTimeLeft = 0;
-    let isRestPeriod = false;
+    let timerInt = null;
+    let exIdx = 0;
+    let timeLeft = 0;
+    let isRest = false;
     let soundOn = true;
-    let totalExercisesDone = 0;
-    let todaysWorkouts = 0;
+    let musicOn = false;
+    let totalExDone = 0;
+    let todayWkts = 0;
+    let musicCtx = null;
+    let musicNodes = [];
 
     // ==================== INIT ====================
     function init() {
-        createBgParticles();
-        loadStats();
-        loadHistory();
-        renderStats();
-        renderHistory();
-    }
-
-    function createBgParticles() {
-        const container = document.getElementById('bgParticles');
-        for (let i = 0; i < 30; i++) {
-            const p = document.createElement('div');
-            p.className = 'bg-particle';
-            p.style.left = Math.random() * 100 + '%';
-            p.style.width = p.style.height = (Math.random() * 4 + 2) + 'px';
-            p.style.animationDuration = (Math.random() * 15 + 10) + 's';
-            p.style.animationDelay = Math.random() * 15 + 's';
-            container.appendChild(p);
-        }
+        loadStats(); loadHistory();
+        renderStats(); renderHistory();
     }
 
     // ==================== STATS ====================
     function loadStats() {
         const s = JSON.parse(localStorage.getItem('wg_stats') || '{}');
-        totalExercisesDone = s.totalExercises || 0;
-        const lastDate = s.lastWorkoutDate || '';
-        const today = new Date().toISOString().split('T')[0];
-        if (lastDate === today) {
-            todaysWorkouts = s.todaysWorkouts || 0;
-        } else {
-            todaysWorkouts = 0;
-        }
+        totalExDone = s.totalExercises || 0;
+        const last = s.lastWorkoutDate || '';
+        const today = ymd();
+        todayWkts = (last === today) ? (s.todaysWorkouts || 0) : 0;
     }
 
     function saveStats() {
-        const today = new Date().toISOString().split('T')[0];
+        const today = ymd();
         const s = JSON.parse(localStorage.getItem('wg_stats') || '{}');
-        const lastDate = s.lastWorkoutDate || '';
         let streak = s.streak || 0;
-        if (lastDate !== today) {
-            const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
-            streak = (lastDate === yesterday) ? streak + 1 : 1;
+        const last = s.lastWorkoutDate || '';
+        if (last !== today) {
+            const yest = ymd(new Date(Date.now() - 864e5));
+            streak = (last === yest) ? streak + 1 : 1;
         }
-        todaysWorkouts++;
-        totalExercisesDone += (currentWorkout ? currentWorkout.exercises.length : 0);
+        todayWkts++;
+        totalExDone += (workout ? workout.exercises.length : 0);
         localStorage.setItem('wg_stats', JSON.stringify({
-            totalExercises: totalExercisesDone,
-            streak: streak,
-            lastWorkoutDate: today,
-            todaysWorkouts: todaysWorkouts,
+            totalExercises: totalExDone,
+            streak, lastWorkoutDate: today,
+            todaysWorkouts: todayWkts,
         }));
     }
 
     function renderStats() {
         const s = JSON.parse(localStorage.getItem('wg_stats') || '{}');
-        document.getElementById('streakCount').textContent = s.streak || 0;
-        document.getElementById('totalWorkouts').textContent = countTotalWorkouts();
-        document.getElementById('totalReps').textContent = s.totalExercises || 0;
+        $('streakCount').textContent = s.streak || 0;
+        $('totalWorkouts').textContent = history.length + (parseInt(localStorage.getItem('wg_total_workouts') || 0));
+        $('totalReps').textContent = s.totalExercises || 0;
     }
 
-    function countTotalWorkouts() {
-        return workoutHistory.length + (parseInt(localStorage.getItem('wg_total_workouts') || 0));
-    }
+    function ymd(d) { return (d || new Date()).toISOString().split('T')[0]; }
 
     // ==================== HISTORY ====================
-    function loadHistory() {
-        workoutHistory = JSON.parse(localStorage.getItem('wg_history') || '[]');
-    }
-
+    function loadHistory() { history = JSON.parse(localStorage.getItem('wg_history') || '[]'); }
     function saveHistory() {
         const all = JSON.parse(localStorage.getItem('wg_history') || '[]');
-        if (currentWorkout) {
-            all.unshift({
-                difficulty: currentWorkout.difficulty,
-                count: currentWorkout.exercises.length,
-                timestamp: new Date().toISOString(),
-            });
+        if (workout) {
+            all.unshift({ difficulty: workout.difficulty, count: workout.exercises.length, timestamp: new Date().toISOString() });
             if (all.length > 20) all.pop();
             localStorage.setItem('wg_history', JSON.stringify(all));
-            workoutHistory = all;
+            history = all;
         }
     }
-
     function renderHistory() {
-        const list = document.getElementById('historyList');
-        if (workoutHistory.length === 0) {
-            list.innerHTML = '<p class="no-history">No workouts yet — generate your first one! 🏃</p>';
-            return;
-        }
-        let html = '';
-        workoutHistory.forEach(w => {
-            const d = new Date(w.timestamp);
-            const diffEmoji = w.difficulty === 'easy' ? '🌱' : w.difficulty === 'medium' ? '⚡' : '💀';
-            const timeStr = formatTime(d);
-            html += `<div class="history-item">
-                <span>${diffEmoji} ${w.count} exercises</span>
-                <span class="history-diff ${w.difficulty}">${w.difficulty.toUpperCase()}</span>
-                <span style="font-size:0.72rem;color:#6b7280;">${timeStr}</span>
+        const el = $('histList');
+        if (!history.length) { el.innerHTML = '<p class="no-history">No workouts yet — generate your first one! 🏃</p>'; return; }
+        let h = '';
+        history.forEach(w => {
+            const de = w.difficulty === 'easy' ? '🌱' : w.difficulty === 'medium' ? '⚡' : '💀';
+            const ts = fmtTime(new Date(w.timestamp));
+            h += `<div class="h-item">
+                <span>${de} ${w.count} exercises</span>
+                <span class="h-diff ${w.difficulty}">${w.difficulty.toUpperCase()}</span>
+                <span style="font-size:0.72rem;color:#6b7280">${ts}</span>
             </div>`;
         });
-        list.innerHTML = html;
+        el.innerHTML = h;
     }
-
-    function formatTime(date) {
-        const now = new Date();
-        const diff = Math.floor((now - date) / 1000);
+    function fmtTime(d) {
+        const diff = Math.floor((Date.now() - d) / 1000);
         if (diff < 60) return 'just now';
         if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
         if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
-        return date.toLocaleDateString();
+        return d.toLocaleDateString();
     }
 
-    // ==================== DIFFICULTY ====================
-    document.getElementById('difficultyRow').addEventListener('click', function(e) {
-        if (e.target.classList.contains('diff-btn')) {
-            document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
-            e.target.classList.add('active');
-            currentDifficulty = e.target.dataset.diff;
-        }
+    // ==================== SHORTCUT ====================
+    function $(id) { return document.getElementById(id); }
+
+    // ==================== DIFF CLICK ====================
+    $('diffBar').addEventListener('click', e => {
+        if (!e.target.classList.contains('diff-btn')) return;
+        document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        diff = e.target.dataset.diff;
     });
 
     // ==================== GENERATE ====================
-    function generateWorkout() {
-        if (timerEnabled && timerRunning) {
-            if (!confirm('A workout is in progress. Start a new one?')) return;
-            resetTimer();
-        }
-
-        const btn = document.getElementById('generateBtn');
+    function gen() {
+        if (timerOn && timerRun) { if (!confirm('Workout in progress. New one?')) return; resetTimer(); }
+        const btn = $('genBtn');
         btn.classList.add('spinning');
         setTimeout(() => btn.classList.remove('spinning'), 500);
 
-        const pool = exercises[currentDifficulty];
-        const count = currentDifficulty === 'easy' ? 6 : currentDifficulty === 'medium' ? 7 : 8;
-        const shuffled = [...pool].sort(() => Math.random() - 0.5);
-        const selected = shuffled.slice(0, count);
+        const pool = exercises[diff];
+        const count = diff === 'easy' ? 6 : diff === 'medium' ? 7 : 8;
+        const sel = [...pool].sort(() => Math.random() - 0.5).slice(0, count);
 
-        currentWorkout = {
-            difficulty: currentDifficulty,
-            exercises: selected,
-            timestamp: new Date().toISOString(),
-        };
+        workout = { difficulty: diff, exercises: sel, timestamp: new Date().toISOString() };
 
-        renderWorkout(currentWorkout);
-        saveHistory();
-        saveStats();
-        renderHistory();
-        renderStats();
-        document.getElementById('actionsRow').style.display = 'flex';
-
-        // Reset timer state
-        if (timerEnabled) {
-            resetTimerSilent();
-            document.getElementById('timerBar').classList.add('show');
-        }
-
-        // Show motivation
-        showMotivation('New workout generated! 🎲');
-
-        document.getElementById('workoutResult').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        renderWorkout();
+        saveHistory(); saveStats();
+        renderHistory(); renderStats();
+        $('actionRow').style.display = 'flex';
+        if (timerOn) { resetTimerSilent(); $('timerPanel').classList.add('show'); }
+        showMotto('New workout generated! 🎲');
+        $('workoutSec').scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
-    function renderWorkout(workout) {
-        const diffEmoji = workout.difficulty === 'easy' ? '🌱' : workout.difficulty === 'medium' ? '⚡' : '💀';
-        let html = `<div class="workout-card">
-            <div class="workout-header">
-                <span class="workout-title">${diffEmoji} ${workout.difficulty.charAt(0).toUpperCase() + workout.difficulty.slice(1)} Workout</span>
-                <span class="total-badge">${workout.exercises.length} exercises</span>
-            </div><ul class="exercise-list">`;
-
+    function renderWorkout() {
+        const dem = diff === 'easy' ? '🌱' : diff === 'medium' ? '⚡' : '💀';
+        let h = `<div class="workout-top-line">
+            <span class="w-title">${dem} ${diff.charAt(0).toUpperCase()+diff.slice(1)} Workout</span>
+            <span class="w-badge">${workout.exercises.length} exercises</span>
+        </div><ul class="ex-list">`;
         workout.exercises.forEach((ex, i) => {
-            html += `<li class="exercise-item" id="ex-${i}">
-                <span class="exercise-emoji">${ex.emoji}</span>
-                <div class="exercise-info">
-                    <div class="exercise-name">${ex.name}</div>
-                    <div class="exercise-detail">${ex.detail}</div>
-                    <div class="exercise-reps">💡 ${ex.reps}</div>
+            h += `<li class="ex-item" id="ex-${i}">
+                <span class="ex-emoji">${ex.emoji}</span>
+                <div class="ex-body">
+                    <div class="ex-name">${ex.name}</div>
+                    <div class="ex-detail">${ex.detail}</div>
+                    <div class="ex-tip">💡 ${ex.reps}</div>
                 </div>
-                <div class="exercise-check" id="check-${i}" onclick="toggleCheck(${i})" title="Mark as done">✅</div>
+                <div class="ex-tick" id="tick-${i}" onclick="tickEx(${i})">✅</div>
             </li>`;
         });
-
-        html += `</ul></div>`;
-        document.getElementById('workoutResult').innerHTML = html;
+        h += '</ul>';
+        $('workoutSec').innerHTML = h;
+        $('workoutSec').classList.add('show');
     }
 
-    // ==================== TOGGLE CHECK ====================
-    function toggleCheck(index) {
-        const check = document.getElementById('check-' + index);
-        if (!check) return;
-        check.classList.toggle('done');
-
-        if (check.classList.contains('done')) {
-            check.textContent = '✅';
-            playBeep('complete');
-            const allChecks = document.querySelectorAll('.exercise-check');
-            const allDone = Array.from(allChecks).every(c => c.classList.contains('done') || c.classList.contains('skipped'));
-            const doneCount = Array.from(allChecks).filter(c => c.classList.contains('done')).length;
-            const total = allChecks.length;
-            if (doneCount >= total * 0.75 && doneCount < total) {
-                showMotivation(motivators[Math.floor(Math.random() * motivators.length)]);
-            }
-            if (allDone) {
-                celebrate();
-                showMotivation('WORKOUT COMPLETE! 🏆🎉');
-                if (timerEnabled && timerRunning) resetTimer();
-            }
-        } else {
-            check.textContent = '';
-        }
+    // ==================== TICK ====================
+    function tickEx(i) {
+        const t = $('tick-'+i); if (!t) return;
+        t.classList.toggle('done');
+        if (t.classList.contains('done')) { t.textContent='✅'; beep('done'); checkAllDone(); }
+        else t.textContent='';
+    }
+    function checkAllDone() {
+        const all = document.querySelectorAll('.ex-tick');
+        const done = Array.from(all).filter(c => c.classList.contains('done') || c.classList.contains('skipped'));
+        if (done.length >= all.length * 0.75 && done.length < all.length)
+            showMotto(mottoes[Math.floor(Math.random()*mottoes.length)]);
+        if (done.length === all.length) { confetti(); showMotto('WORKOUT COMPLETE! 🏆🎉'); if(timerOn&&timerRun)resetTimer(); }
     }
 
     // ==================== TIMER ====================
     function toggleTimerMode() {
-        timerEnabled = !timerEnabled;
-        const toggle = document.getElementById('timerToggle');
-        const bar = document.getElementById('timerBar');
-
-        if (timerEnabled) {
-            toggle.classList.add('active');
-            toggle.innerHTML = '⏱️ Timer Mode: ON';
-            if (currentWorkout) {
-                bar.classList.add('show');
-                resetTimerSilent();
-            }
-        } else {
-            toggle.classList.remove('active');
-            toggle.innerHTML = '⏱️ Workout Timer Mode';
-            resetTimer();
-            bar.classList.remove('show');
-        }
+        timerOn = !timerOn;
+        const t = $('timerToggle'), p = $('timerPanel');
+        if (timerOn) { t.classList.add('active'); t.innerHTML='⏱️ Timer Mode: ON'; if(workout){p.classList.add('show');resetTimerSilent();} }
+        else { t.classList.remove('active'); t.innerHTML='⏱️ Workout Timer Mode'; resetTimer(); p.classList.remove('show'); }
     }
-
     function resetTimerSilent() {
-        if (!currentWorkout) return;
-        currentExIndex = 0;
-        isRestPeriod = false;
-        timerRunning = false;
-        timerPaused = false;
-        if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
-        updateTimerUI('reset');
-        highlightCurrentExercise();
+        if (!workout) return; exIdx=0; isRest=false; timerRun=false; timerPaused=false;
+        if(timerInt){clearInterval(timerInt);timerInt=null;} updateTimerUI('reset'); hiEx();
     }
-
-    function resetTimer() {
-        resetTimerSilent();
-        if (!currentWorkout) return;
-        const bar = document.getElementById('timerBar');
-        bar.classList.remove('show');
-        if (timerEnabled) bar.classList.add('show');
-    }
-
+    function resetTimer() { resetTimerSilent(); if(workout&&timerOn)$('timerPanel').classList.add('show'); else $('timerPanel').classList.remove('show'); }
     function startTimer() {
-        if (!currentWorkout) { generateWorkout(); return; }
-        if (timerRunning && !timerPaused) return;
-
-        if (!timerPaused) {
-            // Fresh start
-            currentExIndex = 0;
-            isRestPeriod = false;
-            currentTimeLeft = currentWorkout.exercises[0].seconds;
-        }
-
-        timerRunning = true;
-        timerPaused = false;
-        document.getElementById('timerStartBtn').style.display = 'none';
-        document.getElementById('timerPauseBtn').style.display = 'inline-block';
-        document.getElementById('timerBar').classList.add('show');
-
-        highlightCurrentExercise();
-        updateTimerUI('start');
-
-        playBeep('start');
-
-        timerInterval = setInterval(() => {
-            currentTimeLeft--;
-            updateTimerUI('tick');
-
-            if (currentTimeLeft <= 0) {
-                playBeep('switch');
-                advanceExercise();
-            }
-        }, 1000);
+        if(!workout){gen();return;} if(timerRun&&!timerPaused)return;
+        if(!timerPaused){exIdx=0;isRest=false;timeLeft=workout.exercises[0].seconds;}
+        timerRun=true;timerPaused=false;
+        $('tStartBtn').style.display='none';$('tPauseBtn').style.display='inline-block';
+        $('timerPanel').classList.add('show');
+        hiEx();updateTimerUI('go');beep('start');
+        timerInt=setInterval(()=>{timeLeft--;updateTimerUI('tick');if(timeLeft<=0){beep('switch');advance();}},1000);
     }
-
     function pauseTimer() {
-        timerRunning = false;
-        timerPaused = true;
-        if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
-        document.getElementById('timerStartBtn').style.display = 'inline-block';
-        document.getElementById('timerPauseBtn').style.display = 'none';
-        document.getElementById('timerStartBtn').textContent = '▶️ RESUME';
-        updateTimerUI('pause');
+        timerRun=false;timerPaused=true;if(timerInt){clearInterval(timerInt);timerInt=null;}
+        $('tStartBtn').style.display='inline-block';$('tPauseBtn').style.display='none';
+        $('tStartBtn').textContent='▶️ RESUME';updateTimerUI('pause');
     }
+    function skipEx() {
+        if(!workout)return;
+        if(!isRest&&exIdx<workout.exercises.length){const t=$('tick-'+exIdx);if(t&&!t.classList.contains('done'))t.classList.add('skipped');}
+        advance(true);
+    }
+    function advance(skipped=false){
+        if(!workout)return;
+        if(isRest){isRest=false;exIdx++;if(exIdx>=workout.exercises.length){doneWorkout();return;}
+            timeLeft=workout.exercises[exIdx].seconds;hiEx();updateTimerUI('ex');showMotto(mottoes[Math.floor(Math.random()*mottoes.length)]);}
+        else{if(!skipped&&exIdx<workout.exercises.length){const t=$('tick-'+exIdx);if(t){t.classList.add('done');t.textContent='✅';}}
+            if(exIdx<workout.exercises.length){isRest=true;timeLeft=workout.exercises[exIdx].rest;hiEx();updateTimerUI('rest');}}
+    }
+    function doneWorkout(){
+        resetTimerSilent();$('tStartBtn').style.display='inline-block';$('tPauseBtn').style.display='none';
+        $('tStartBtn').textContent='▶️ START';$('timerPanel').classList.remove('show');
+        confetti();showMotto('WORKOUT COMPLETE! 🏆🎉');
+        document.querySelectorAll('.ex-tick').forEach(c=>{c.classList.add('done');c.textContent='✅';});
+    }
+    function hiEx(){
+        document.querySelectorAll('.ex-item').forEach(e=>e.classList.remove('active','current'));
+        if(workout&&exIdx<workout.exercises.length){const e=$('ex-'+exIdx);if(e){e.classList.add('active');if(!isRest)e.classList.add('current');}}
+    }
+    function updateTimerUI(st) {
+        const nm=$('timerExName'),sub=$('timerSub'),big=$('timerBig'),bar=$('progressFill');
+        const tot = workout ? workout.exercises.length : 0;
+        if(!workout||exIdx>=tot){nm.textContent='All done! 🎉';sub.textContent='';big.textContent='🏆';bar.style.width='100%';bar.classList.add('done');return;}
+        const ex=workout.exercises[exIdx];big.classList.remove('rest','urgent');
+        if(st==='reset'){nm.textContent='Ready?';sub.textContent='Press START to begin!';big.textContent='00:00';bar.style.width='0%';}
+        else if(isRest){nm.textContent='😮‍💨 Rest after: '+ex.name;sub.textContent=ex.rest+'s rest — hydrate! 💧';big.classList.add('rest');big.textContent=fSec(timeLeft);
+            const pct=Math.max(0,(timeLeft/ex.rest)*100);bar.style.width=pct+'%';}
+        else{nm.textContent=ex.emoji+' '+ex.name;sub.textContent=ex.detail+' · '+(exIdx+1)+'/'+tot;big.textContent=fSec(timeLeft);
+            if(timeLeft<=5)big.classList.add('urgent');
+            const totPct=((exIdx+(1-timeLeft/ex.seconds))/tot)*100;bar.style.width=totPct+'%';}
+    }
+    function fSec(s){const m=Math.floor(s/60),sec=s%60;return String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0');}
 
-    function skipExercise() {
-        if (!currentWorkout) return;
-        // Mark current as skipped
-        if (!isRestPeriod && currentExIndex < currentWorkout.exercises.length) {
-            const check = document.getElementById('check-' + currentExIndex);
-            if (check && !check.classList.contains('done')) {
-                check.classList.add('skipped');
+    // ==================== SOUND + MUSIC ====================
+    function beep(type){
+        if(!soundOn)return;
+        try{const c=new(window.AudioContext||window.webkitAudioContext)(),o=c.createOscillator(),g=c.createGain();
+            o.connect(g);g.connect(c.destination);g.gain.value=0.12;
+            if(type==='start'){o.frequency.value=660;o.type='sine';}
+            else if(type==='switch'){o.frequency.value=880;o.type='square';}
+            else if(type==='done'){o.frequency.value=520;o.type='triangle';}
+            else{o.frequency.value=440;o.type='sine';}
+            o.start();g.gain.exponentialRampToValueAtTime(0.001,c.currentTime+0.2);o.stop(c.currentTime+0.2);
+        }catch(e){}
+    }
+    function toggleSound(){soundOn=!soundOn;$('soundBtn').textContent=soundOn?'🔊':'🔇';}
+    function toggleMusic(){
+        musicOn=!musicOn;
+        const btn=$('musicBtn');
+        if(musicOn){btn.classList.add('music-on');btn.textContent='🎵';startMusic();}
+        else{btn.classList.remove('music-on');btn.textContent='🎵';stopMusic();}
+    }
+    function startMusic(){
+        if(musicCtx)stopMusic();
+        try{
+            musicCtx=new(window.AudioContext||window.webkitAudioContext)();
+            // Simple lo-fi workout beat — copyright-free synth
+            const bpm=95,beatMs=60000/bpm;
+            // Kick
+            function kick(t){
+                const o=musicCtx.createOscillator(),g=musicCtx.createGain();
+                o.frequency.setValueAtTime(150,t);o.frequency.exponentialRampToValueAtTime(40,t+0.1);
+                g.gain.setValueAtTime(0.3,t);g.gain.exponentialRampToValueAtTime(0.001,t+0.25);
+                o.connect(g);g.connect(musicCtx.destination);o.start(t);o.stop(t+0.25);musicNodes.push(o,g);
             }
-        }
-        advanceExercise(true);
-    }
-
-    function advanceExercise(skipped = false) {
-        if (!currentWorkout) return;
-
-        if (isRestPeriod) {
-            // Rest just ended — move to next exercise
-            isRestPeriod = false;
-            currentExIndex++;
-            if (currentExIndex >= currentWorkout.exercises.length) {
-                completeWorkout();
-                return;
+            // Snare
+            function snare(t){
+                const bufferSize=musicCtx.sampleRate*0.1;
+                const buffer=musicCtx.createBuffer(1,bufferSize,musicCtx.sampleRate);
+                const data=buffer.getChannelData(0);
+                for(let i=0;i<bufferSize;i++)data[i]=(Math.random()*2-1)*Math.exp(-i/(bufferSize*0.05));
+                const s=musicCtx.createBufferSource(),g=musicCtx.createGain();
+                s.buffer=buffer;g.gain.setValueAtTime(0.15,t);g.gain.exponentialRampToValueAtTime(0.001,t+0.15);
+                s.connect(g);g.connect(musicCtx.destination);s.start(t);musicNodes.push(s,g);
             }
-            currentTimeLeft = currentWorkout.exercises[currentExIndex].seconds;
-            highlightCurrentExercise();
-            updateTimerUI('exercise');
-            showMotivation(motivators[Math.floor(Math.random() * motivators.length)]);
-        } else {
-            // Exercise just ended
-            if (!skipped && currentExIndex < currentWorkout.exercises.length) {
-                const check = document.getElementById('check-' + currentExIndex);
-                if (check) { check.classList.add('done'); check.textContent = '✅'; }
+            // Hi-hat
+            function hh(t){
+                const bufferSize=musicCtx.sampleRate*0.05;
+                const buffer=musicCtx.createBuffer(1,bufferSize,musicCtx.sampleRate);
+                const data=buffer.getChannelData(0);
+                for(let i=0;i<bufferSize;i++)data[i]=(Math.random()*2-1)*Math.exp(-i/(bufferSize*0.02));
+                const s=musicCtx.createBufferSource(),g=musicCtx.createGain(),f=musicCtx.createBiquadFilter();
+                f.type='highpass';f.frequency.value=7000;
+                g.gain.setValueAtTime(0.08,t);g.gain.exponentialRampToValueAtTime(0.001,t+0.05);
+                s.buffer=buffer;s.connect(f);f.connect(g);g.connect(musicCtx.destination);s.start(t);musicNodes.push(s,g,f);
             }
-            // Start rest
-            if (currentExIndex < currentWorkout.exercises.length) {
-                isRestPeriod = true;
-                currentTimeLeft = currentWorkout.exercises[currentExIndex].rest;
-                highlightCurrentExercise();
-                updateTimerUI('rest');
+            function loop(){
+                if(!musicOn||!musicCtx)return;
+                const now=musicCtx.currentTime;
+                for(let i=0;i<4;i++){
+                    const t=now+i*beatMs/1000;
+                    kick(t);hh(t+0.25*beatMs/1000);
+                    if(i%2===0)snare(t+0.5*beatMs/1000);
+                    hh(t+0.75*beatMs/1000);
+                }
+                // Bass synth note
+                const b=musicCtx.createOscillator(),bg=musicCtx.createGain();
+                b.type='triangle';b.frequency.value=55;
+                bg.gain.setValueAtTime(0.1,now);bg.gain.setValueAtTime(0.1,now+beatMs*3.5/1000);
+                bg.gain.linearRampToValueAtTime(0.001,now+beatMs*4/1000);
+                b.connect(bg);bg.connect(musicCtx.destination);b.start(now);b.stop(now+beatMs*4/1000);
+                musicNodes.push(b,bg);
+                musicTimeout=setTimeout(loop,beatMs*4);
             }
-        }
+            let musicTimeout;
+            loop();
+        }catch(e){}
+    }
+    function stopMusic(){
+        if(musicTimeout)clearTimeout(musicTimeout);
+        musicNodes.forEach(n=>{try{n.stop()}catch(e){}});musicNodes=[];
+        if(musicCtx){try{musicCtx.close()}catch(e){}musicCtx=null;}
     }
 
-    function completeWorkout() {
-        resetTimerSilent();
-        document.getElementById('timerStartBtn').style.display = 'inline-block';
-        document.getElementById('timerPauseBtn').style.display = 'none';
-        document.getElementById('timerStartBtn').textContent = '▶️ START';
-        document.getElementById('timerBar').classList.remove('show');
-        celebrate();
-        showMotivation('WORKOUT COMPLETE! 🏆🎉');
-        // Auto-check all remaining
-        document.querySelectorAll('.exercise-check').forEach(c => { c.classList.add('done'); c.textContent = '✅'; });
+    // ==================== MOTTO ====================
+    let mTm;
+    function showMotto(m){const e=$('motto');e.textContent=m;e.classList.add('show');clearTimeout(mTm);mTm=setTimeout(()=>e.classList.remove('show'),3000);}
+
+    // ==================== CONFETTI ====================
+    function confetti(){
+        const c=$('confetti'),cols=['#4ade80','#f43f5e','#fbbf24','#8b5cf6','#38bdf8','#fb923c','#a78bfa','#34d399','#FF6B35','#ec4899'];
+        for(let i=0;i<80;i++){const p=document.createElement('div');p.className='c-piece';
+            p.style.left=Math.random()*100+'%';p.style.backgroundColor=cols[Math.floor(Math.random()*cols.length)];
+            p.style.animationDelay=Math.random()*2+'s';p.style.width=p.style.height=(Math.random()*10+5)+'px';
+            p.style.animationDuration=(Math.random()*2+2)+'s';c.appendChild(p);setTimeout(()=>p.remove(),4000);}
+        beep('done');
     }
 
-    function highlightCurrentExercise() {
-        document.querySelectorAll('.exercise-item').forEach(el => el.classList.remove('active', 'current'));
-        if (currentWorkout && currentExIndex < currentWorkout.exercises.length) {
-            const el = document.getElementById('ex-' + currentExIndex);
-            if (el) {
-                el.classList.add('active');
-                if (!isRestPeriod) el.classList.add('current');
-            }
-        }
-    }
-
-    function updateTimerUI(state) {
-        const label = document.getElementById('timerLabel');
-        const detail = document.getElementById('timerDetail');
-        const countdown = document.getElementById('timerCountdown');
-        const progressBar = document.getElementById('progressBar');
-        const totalEx = currentWorkout ? currentWorkout.exercises.length : 0;
-
-        if (!currentWorkout || currentExIndex >= totalEx) {
-            label.textContent = 'All done! 🎉';
-            detail.textContent = '';
-            countdown.textContent = '🏆';
-            progressBar.style.width = '100%';
-            progressBar.classList.add('complete');
-            return;
-        }
-
-        const ex = currentWorkout.exercises[currentExIndex];
-        countdown.classList.remove('rest', 'urgent');
-
-        if (state === 'reset') {
-            label.textContent = 'Ready?';
-            detail.textContent = 'Press START to begin!';
-            countdown.textContent = '00:00';
-            progressBar.style.width = '0%';
-        } else if (isRestPeriod) {
-            label.textContent = `😮‍💨 Rest after: ${ex.name}`;
-            detail.textContent = `${ex.rest}s rest — hydrate! 💧`;
-            countdown.classList.add('rest');
-            countdown.textContent = formatSeconds(currentTimeLeft);
-            progressBar.style.width = Math.max(0, (currentTimeLeft / ex.rest) * 100) + '%';
-        } else {
-            label.textContent = `${ex.emoji} ${ex.name}`;
-            detail.textContent = `${ex.detail} · ${currentExIndex + 1}/${totalEx}`;
-            countdown.textContent = formatSeconds(currentTimeLeft);
-            if (currentTimeLeft <= 5) countdown.classList.add('urgent');
-            progressBar.style.width = Math.max(0, (currentTimeLeft / ex.seconds) * 100) + '%';
-            const totalProgress = ((currentExIndex + (1 - currentTimeLeft / ex.seconds)) / totalEx) * 100;
-            progressBar.style.width = totalProgress + '%';
-        }
-
-        if (currentExIndex >= totalEx - 1 && !isRestPeriod && currentTimeLeft <= 0) {
-            progressBar.classList.add('complete');
-        }
-    }
-
-    function formatSeconds(s) {
-        const m = Math.floor(s / 60);
-        const sec = s % 60;
-        return String(m).padStart(2, '0') + ':' + String(sec).padStart(2, '0');
-    }
-
-    // ==================== SOUND ====================
-    function playBeep(type) {
-        if (!soundOn) return;
-        try {
-            const ctx = new (window.AudioContext || window.webkitAudioContext)();
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-            gain.gain.value = 0.15;
-
-            if (type === 'start') { osc.frequency.value = 660; osc.type = 'sine'; }
-            else if (type === 'switch') { osc.frequency.value = 880; osc.type = 'square'; }
-            else if (type === 'complete') { osc.frequency.value = 520; osc.type = 'triangle'; }
-            else { osc.frequency.value = 440; osc.type = 'sine'; }
-
-            osc.start();
-            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
-            osc.stop(ctx.currentTime + 0.2);
-        } catch(e) {}
-    }
-
-    function toggleSound() {
-        soundOn = !soundOn;
-        document.getElementById('soundToggle').textContent = soundOn ? '🔊' : '🔇';
-    }
-
-    // ==================== MOTIVATION ====================
-    let motivTimeout;
-    function showMotivation(msg) {
-        const el = document.getElementById('motivation');
-        el.textContent = msg;
-        el.classList.add('show');
-        clearTimeout(motivTimeout);
-        motivTimeout = setTimeout(() => el.classList.remove('show'), 3000);
-    }
-
-    // ==================== CELEBRATION ====================
-    function celebrate() {
-        const confetti = document.getElementById('confetti');
-        const colors = ['#4ade80', '#f43f5e', '#fbbf24', '#8b5cf6', '#38bdf8', '#fb923c', '#a78bfa', '#34d399', '#FF6B35', '#ec4899'];
-        for (let i = 0; i < 80; i++) {
-            const piece = document.createElement('div');
-            piece.className = 'confetti-piece';
-            piece.style.left = Math.random() * 100 + '%';
-            piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-            piece.style.animationDelay = Math.random() * 2 + 's';
-            piece.style.width = (Math.random() * 10 + 5) + 'px';
-            piece.style.height = (Math.random() * 10 + 5) + 'px';
-            piece.style.animationDuration = (Math.random() * 2 + 2) + 's';
-            confetti.appendChild(piece);
-            setTimeout(() => piece.remove(), 4000);
-        }
-        playBeep('complete');
-    }
-
-    // ==================== SHARE ====================
-    function shareWorkout() {
-        if (!currentWorkout) return;
-        let text = `💪 My ${currentWorkout.difficulty.toUpperCase()} Workout\n━━━━━━━━━━━━━━━━\n`;
-        currentWorkout.exercises.forEach((ex, i) => {
-            text += `${i + 1}. ${ex.emoji} ${ex.name} — ${ex.detail}\n   💡 ${ex.reps}\n`;
-        });
-        text += `━━━━━━━━━━━━━━━━\nGenerated by Random Workout Generator 🎲`;
-
-        navigator.clipboard.writeText(text).then(() => {
-            showMotivation('✅ Copied to clipboard! Share it with a friend!');
-        }).catch(() => {
-            alert('Could not copy. Here is your workout:\n\n' + text);
-        });
+    // ==================== COPY ====================
+    function copyWorkout(){
+        if(!workout)return;
+        let txt=`💪 My ${workout.difficulty.toUpperCase()} Workout\n━━━━━━━━━━━━━━━━\n`;
+        workout.exercises.forEach((ex,i)=>{txt+=`${i+1}. ${ex.emoji} ${ex.name} — ${ex.detail}\n   💡 ${ex.reps}\n`;});
+        txt+=`━━━━━━━━━━━━━━━━\nGenerated by Random Workout Generator 🎲`;
+        navigator.clipboard.writeText(txt).then(()=>showMotto('✅ Copied! Share with a friend!')).catch(()=>alert(txt));
     }
 
     // ==================== PWA INSTALL ====================
-    let deferredPrompt = null;
-    window.addEventListener('beforeinstallprompt', function(e) {
-        e.preventDefault();
-        deferredPrompt = e;
-        document.getElementById('installBtn').style.display = 'block';
-    });
-    function installApp() {
-        if (!deferredPrompt) {
-            const isIOS = /iphone|ipad|ipod/.test(navigator.userAgent.toLowerCase());
-            alert(isIOS ? 'Tap Share (📤) → "Add to Home Screen"' : 'Tap menu (⋮) → "Install"');
-            return;
-        }
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then(function(result) {
-            if (result.outcome === 'accepted') document.getElementById('installBtn').style.display = 'none';
-            deferredPrompt = null;
-        });
+    let dPrompt=null;
+    window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();dPrompt=e;$('installBtn').style.display='block';});
+    function installApp(){
+        if(!dPrompt){const ios=/iphone|ipad|ipod/.test(navigator.userAgent.toLowerCase());
+            alert(ios?'Tap Share (📤) → "Add to Home Screen"':'Tap menu (⋮) → "Install"');return;}
+        dPrompt.prompt();dPrompt.userChoice.then(r=>{if(r.outcome==='accepted')$('installBtn').style.display='none';dPrompt=null;});
     }
 
     // ==================== BOOT ====================
@@ -1266,13 +1087,8 @@
 
     <!-- Service Worker -->
     <script>
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function() {
-            navigator.serviceWorker.register('/workout-generator/sw.js').then(
-                function(reg) { console.log('SW registered'); },
-                function(err) { console.log('SW failed:', err); }
-            );
-        });
+    if('serviceWorker' in navigator){
+        window.addEventListener('load',()=>{navigator.serviceWorker.register('/workout-generator/sw.js')});
     }
     </script>
 </body>
